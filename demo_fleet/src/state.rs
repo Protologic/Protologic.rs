@@ -1,3 +1,6 @@
+use std::sync::Mutex;
+use std::sync::OnceLock;
+
 use protologic_core::lowlevel::constants::const_get_turretshellspeed;
 use rand::Rng;
 use rand::SeedableRng;
@@ -17,9 +20,18 @@ pub struct State
     scan_angle: f32
 }
 
+static STATE: OnceLock<Mutex<State>> = OnceLock::new();
+
 impl State
 {
-    pub fn new(ticks: u64) -> State
+    /// The "state" of the program is stored in a mutable static object. Get access to the
+    /// state through this method. This allows state to persist between calls of main/trap_handler.
+    pub fn get_state_singleton() -> &'static Mutex<State>
+    {
+        return STATE.get_or_init(|| Mutex::new(State::new(0)));
+    }
+
+    fn new(ticks: u64) -> State
     {
         return State {
             rng: ChaCha20Rng::from_entropy(),
