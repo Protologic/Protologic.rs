@@ -141,27 +141,28 @@ impl State
 
     fn gunnery_test_loop(&mut self)
     {
-        let mut dir = 0f32;
+        let mut elevation = 0f32;
+        let mut bearing = 0f32;
 
         loop {
-            radar_set_elevation(0f32);
-            radar_set_bearing(dir);
+            radar_set_elevation(elevation);
+            radar_set_bearing(bearing);
             radar_set_angle(20f32);
             radar_trigger();
 
-            gun_set_elevation(0, 0f32);
-            gun_set_bearing(0, dir);
+            gun_set_elevation(0, elevation);
+            gun_set_bearing(0, bearing);
 
             for i in 0..radar_get_target_count()
             {
                 let (t, d) = radar_get_target(i);
-                println!("Target detected: {:?}, dir: {}", t, dir);
+                println!("Target detected: {:?}, b:{} e:{}", t, bearing, elevation);
                 gun_set_fuse(0, d / unsafe { const_get_turretshellspeed() });
             }
 
             if radar_get_target_count() > 0
             {
-                for _ in 0..125 {
+                for _ in 0..75 {
                     sched_yield();
                 }
 
@@ -169,14 +170,15 @@ impl State
                 println!("Fire!");
             }
 
-            for _ in 0..500 {
+            for _ in 0..250 {
                 sched_yield();
             }
 
-            dir += 15f32;
+            elevation += 10f32;
 
-            if dir > 360f32 {
-                self_destruct();
+            if elevation > 90f32 {
+                elevation = 0f32;
+                bearing += 10f32;
             }
         }
     }
