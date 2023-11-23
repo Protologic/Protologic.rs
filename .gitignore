@@ -1,3 +1,4 @@
 /target
 /tools
 /*.wasm
+/publish.ps1

@@ -160,7 +160,7 @@ impl State
                 gun_set_fuse(0, d / unsafe { const_get_turretshellspeed() });
             }
 
-            if radar_get_target_count() > 0
+            if radar_get_target_count() > 0 || elevation == 30f32
             {
                 for _ in 0..75 {
                     sched_yield();
