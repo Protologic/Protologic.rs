@@ -14,6 +14,10 @@ This is a template project for using [Rust](https://www.rust-lang.org/) in [Prot
 6. todo: sim instructions/link
 7. todo: player instructions/link
 
+### Alternative
+
+If you do not require the entire example project `protologic_core` is also available on [crates.io](https://crates.io/crates/protologic_core).
+
 ## Project Structure
 
 The project is split into two Rust "crates".
