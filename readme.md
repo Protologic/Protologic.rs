@@ -5,7 +5,7 @@ This is a template project for using [Rust](https://www.rust-lang.org/) in [Prot
 ## Getting Started
 
 1. Clone this repository
-2. Install Rust `wasm` toolchain:
+2. Install the `wasm` toolchain for Rust:
    1. Open terminal (e.g. powershell/bash):
    2. Run: `rustup target add wasm32-wasi`
    3. Run: `rustup target add wasm32-unknown-unknown`
@@ -39,7 +39,7 @@ pub extern fn main()
 }
 ```
 
-The `trap_handler` method is called is a fatal trap terminates execution of your program (e.g. a `panic`). You can use this to recover from errors, for example the `demo_fleet` simply recreates a new `State` to replace the old one.
+The `trap_handler` method is called if a fatal trap terminates execution of your program (e.g. a `panic`). You can use this to recover from errors, for example the `demo_fleet` simply recreates a new `State` to replace the old one.
 ```rust
 #[no_mangle]
 pub extern fn trap_handler(trap_code: protologic_core::trap::TrapCode)
