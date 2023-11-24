@@ -44,9 +44,6 @@ impl State
 
     pub fn main(&mut self)
     {
-        self.gunnery_test_loop();
-        return;
-
         // Turn
         if !self.turned
         {

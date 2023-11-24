@@ -83,7 +83,7 @@ pub fn radar_get_target(index: i32) -> (RadarTargetType, f32)
             1 => RadarTargetType::SpaceHulk,
             2 => RadarTargetType::Missile,
             3 => RadarTargetType::Shell,
-            4 => RadarTargetType::Asteroid,
+            5 => RadarTargetType::Asteroid,
             _ => RadarTargetType::Unknown
         };
 
