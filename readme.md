@@ -30,10 +30,10 @@ The project is split into two Rust "crates".
 
 `demo_fleet` contains a simple demo fleet. `lib.rs` is the root of this project and contains 2 functions which the game will call. Your fleet **must** implement both of these methods!
 
-The `main` method is called by the game every frame.
+The `tick` method is called by the game every frame.
 ```rust
 #[no_mangle]
-pub extern fn main()
+pub extern fn tick()
 {
     // Every frame
 }

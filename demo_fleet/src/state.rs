@@ -36,13 +36,13 @@ impl State
         return State {
             rng: ChaCha20Rng::from_entropy(),
             ticks,
-            turned: true,
-            burned: true,
+            turned: false,
+            burned: false,
             scan_angle: 0f32
         };
     }
 
-    pub fn main(&mut self)
+    pub fn tick(&mut self)
     {
         // Turn
         if !self.turned
@@ -114,10 +114,10 @@ impl State
                 if t != RadarTargetType::Asteroid {
                     detected = true;
                     dist = d;
-                    println!("Target detected: {:?} @ {}", t, dist);
+                    println!("Target detected: {:?} @ {}", t, d);
                     break;
                 } else {
-                    println!("Asteroid detected: {:?} @ {}", t, dist);
+                    println!("Asteroid detected: {:?} @ {}", t, d);
                 }
             }
 

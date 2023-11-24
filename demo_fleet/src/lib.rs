@@ -6,12 +6,12 @@ mod state;
 
 /// Called by the game every frame
 #[no_mangle]
-pub extern fn main()
+pub extern fn tick()
 {
-    state::State::get_state_singleton().lock().unwrap().main();
+    state::State::get_state_singleton().lock().unwrap().tick();
 }
 
-/// Called by the game whenever a "trap" occurs in the main execution.
+/// Called by the game whenever a "trap" occurs in the tick execution.
 #[no_mangle]
 pub extern fn trap_handler(trap_code: protologic_core::trap::TrapCode)
 {
