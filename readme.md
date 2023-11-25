@@ -6,7 +6,7 @@ This is a template project for using [Rust](https://www.rust-lang.org/) in [Prot
 
 1. Clone this repository
 2. Install the `wasm` toolchain for Rust:
-   1. Open terminal (e.g. powershell/bash):
+   1. Open terminal (e.g. PowerShell/bash):
    2. Run: `rustup target add wasm32-wasi`
 3. Download the latest [`binaryen`](https://github.com/WebAssembly/binaryen/releases/) release, place it in `tools/binaryen`
 5. Run `build.ps1` to compile the demo fleet.

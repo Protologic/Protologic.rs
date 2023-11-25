@@ -9,6 +9,14 @@ pub fn self_destruct()
     }
 }
 
+pub fn wheel_set_torque(x: f32, y: f32, z: f32)
+{
+    unsafe
+    {
+        lowlevel::actions::wheel_set_torque(x, y, z);
+    }
+}
+
 pub fn engine_set_throttle(throttle: f32)
 {
     unsafe
