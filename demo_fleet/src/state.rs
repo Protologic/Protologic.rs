@@ -42,7 +42,7 @@ impl State
         // Turn upwards
         if !self.turned
         {
-            Self::turn_and_stop(1.0, 0.0, 0.0, 300);
+            Self::turn_and_stop(1.0, 0.0, 0.0, 800);
             self.turned = true;
         }
 
@@ -50,14 +50,14 @@ impl State
         if !self.burned
         {
             engine_set_throttle(1.0);
-            Self::wait_ticks(150);
+            Self::wait_ticks(350);
             engine_set_throttle(0.0);
         }
 
         // Turn along long axis
         if !self.turned2
         {
-            Self::turn_and_stop(0.0, 0.0, -1.0, 615);
+            Self::turn_and_stop(0.0, 0.0, -1.0, 1650);
             self.turned2 = true;
         }
 
@@ -92,7 +92,7 @@ impl State
             for i in 0..radar_get_target_count()
             {
                 let (t, d) = radar_get_target(i);
-                if t != RadarTargetType::Asteroid
+                if t == RadarTargetType::SpaceBattleShip
                 {
                     detected = true;
                     dist = d;
@@ -107,10 +107,10 @@ impl State
             {
                 Self::wait_ticks(10);
                 let fuse = dist / unsafe { const_get_turretshellspeed() } - 0.1;
-                gun_set_fuse(0, fuse * 0.8);
-                gun_set_fuse(1, fuse * 0.75);
-                gun_set_fuse(2, fuse * 0.7);
-                gun_set_fuse(3, fuse * 0.65);
+                gun_set_fuse(0, fuse * 1.05);
+                gun_set_fuse(1, fuse * 1.0);
+                gun_set_fuse(2, fuse * 0.95);
+                gun_set_fuse(3, fuse * 0.9);
 
                 // wait a short time between each fire so the shells don';'t set each other off
                 gun_trigger(0);
