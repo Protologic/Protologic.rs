@@ -50,7 +50,7 @@ impl State
         if !self.burned
         {
             engine_set_throttle(1.0);
-            Self::wait_ticks(350);
+            Self::wait_ticks(550);
             engine_set_throttle(0.0);
         }
 
@@ -91,7 +91,7 @@ impl State
             let mut dist = 0f32;
             for i in 0..radar_get_target_count()
             {
-                let (t, d) = radar_get_target(i);
+                let (_, t, d) = radar_get_target(i);
                 if t == RadarTargetType::SpaceBattleShip
                 {
                     detected = true;

@@ -13,8 +13,8 @@ extern
     /// Get the Z element of the current world space position of this ship
     pub fn ship_get_position_z() -> f32;
 
-    /// Get the XYZ world space position into the given destination in memory
-    pub fn ship_get_position_ptr(dst: i32);
+    /// Get the XYZ world space position into the given destination in memory (3 x f32)
+    pub fn ship_get_position_ptr(dst: *mut f32);
 
     /// Get the X element of the current world space velocity of this ship
     pub fn ship_get_velocity_x() -> f32;
@@ -25,8 +25,8 @@ extern
     /// Get the Z element of the  current world space velocity of this ship
     pub fn ship_get_velocity_z() -> f32;
 
-    /// Get the XYZ world space velocity into the given destination in memory
-    pub fn ship_get_velocity_ptr(dst: i32);
+    /// Get the XYZ world space velocity into the given destination in memory (3 x f32)
+    pub fn ship_get_velocity_ptr(dst: *mut f32);
 
     /// Get the W element of the orientation quaternion of this ship
     pub fn ship_get_orientation_w() -> f32;
@@ -40,8 +40,8 @@ extern
     /// Get the Z element of the orientation quaternion of this ship
     pub fn ship_get_orientation_z() -> f32;
 
-    /// Get the XYZW orientation of this ship
-    pub fn ship_get_orientation_ptr(dst: i32);
+    /// Get the XYZW orientation of this ship (4 x f32)
+    pub fn ship_get_orientation_ptr(dst: *mut f32);
 
     /// Get the X element of the angular_velocity of this ship
     pub fn ship_get_angularvelocity_x() -> f32;
@@ -52,8 +52,8 @@ extern
     /// Get the Z element of the angular_velocity of this ship
     pub fn ship_get_angularvelocity_z() -> f32;
 
-    /// Get the XYZ angular_velocity of this ship
-    pub fn ship_get_angularvelocity_ptr(dst: i32);
+    /// Get the XYZ angular_velocity of this ship (3 x f32)
+    pub fn ship_get_angularvelocity_ptr(dst: *mut f32);
 
     /// Get the current amount of fuel in the tanks for the rocket engines.
     pub fn engine_get_fuel_amount() -> f32;
@@ -72,6 +72,15 @@ extern
 
     /// Get the the type of the target with the given index
     pub fn radar_get_target_type(index: i32) -> i32;
+
+    /// Get the the ID of the target with the given index
+    pub fn radar_get_target_id(index: i32) -> i64;
+
+    /// Get all info about the target with the given index
+    pub fn radar_get_target_info(index: i32, ptr: *mut RadarGetTargetInfo);
+
+    /// Get all info about all radar targets
+    pub fn radar_get_target_list(ptr: *mut RadarGetTargetInfo, len: i32) -> i32;
 
     /// Get the current bearing of gun 0
     pub fn gun0_get_bearing() -> f32;
@@ -108,4 +117,23 @@ extern
 
     /// Get the number of seconds before gun 3 can fire again
     pub fn gun3_get_refiretime() -> f32;
+}
+
+#[repr(C)]
+pub struct RadarGetTargetInfo
+{
+    pub id: i64,
+    pub target_type: i32,
+    pub distance: f32
+}
+impl RadarGetTargetInfo
+{
+    pub(crate) fn default() -> RadarGetTargetInfo
+    {
+        return RadarGetTargetInfo {
+            id: -1,
+            target_type: -1,
+            distance: -1f32
+        };
+    }
 }

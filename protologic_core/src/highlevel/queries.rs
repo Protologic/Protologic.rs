@@ -13,45 +13,45 @@ pub fn cpu_get_fuel() -> i64
 /// Get the world space position of this ship
 pub fn ship_get_position() -> (f32, f32, f32)
 {
-    let mut p: (f32, f32, f32) = (0.0, 0.0, 0.0);
+    let mut p = [0.0, 0.0, 0.0];
     unsafe
     {
-        ship_get_position_ptr((&mut p) as *mut (f32, f32, f32) as i32);
+        ship_get_position_ptr((&mut p) as *mut f32);
     }
-    return p;
+    return (p[0], p[1], p[2]);
 }
 
 /// Get the world space velocity of this ship
 pub fn ship_get_velocity() -> (f32, f32, f32)
 {
-    let mut v: (f32, f32, f32) = (0.0, 0.0, 0.0);
+    let mut v = [0.0, 0.0, 0.0];
     unsafe
     {
-        ship_get_velocity_ptr((&mut v) as *mut (f32, f32, f32) as i32);
+        ship_get_velocity_ptr((&mut v) as *mut f32);
     }
-    return v;
+    return (v[0], v[1], v[2]);
 }
 
 /// Get the world space orientation of this ship as a quaternion (WXYZ)
 pub fn ship_get_orientation() -> (f32, f32, f32, f32)
 {
-    let mut q: (f32, f32, f32, f32) = (0.0, 0.0, 0.0, 0.0);
+    let mut q = [0.0, 0.0, 0.0, 0.0];
     unsafe
     {
-        ship_get_orientation_ptr((&mut q) as *mut (f32, f32, f32, f32) as i32);
+        ship_get_orientation_ptr((&mut q) as *mut f32);
     }
-    return q;
+    return (q[0], q[1], q[2], q[3]);
 }
 
 /// Get the world space angular velocity of this ship
 pub fn ship_get_angular_velocity() -> (f32, f32, f32)
 {
-    let mut a: (f32, f32, f32) = (0.0, 0.0, 0.0);
+    let mut a = [0.0, 0.0, 0.0];
     unsafe
     {
-        ship_get_angularvelocity_ptr((&mut a) as *mut (f32, f32, f32) as i32);
+        ship_get_angularvelocity_ptr((&mut a) as *mut f32);
     }
-    return a;
+    return (a[0], a[1], a[2]);
 }
 
 /// Get the number of targets detected by the radar last time it was triggered
@@ -63,24 +63,18 @@ pub fn radar_get_target_count() -> i32
     }
 }
 
-/// Get the target type and distance for a given radar detection
-pub fn radar_get_target(index: i32) -> (RadarTargetType, f32)
+/// Get the target ID, type and distance for a given radar detection
+pub fn radar_get_target(index: i32) -> (i64, RadarTargetType, f32)
 {
     unsafe
     {
-        let target_type = match lowlevel::queries::radar_get_target_type(index)
-        {
-            0 => RadarTargetType::SpaceBattleShip,
-            1 => RadarTargetType::SpaceHulk,
-            2 => RadarTargetType::Missile,
-            3 => RadarTargetType::Shell,
-            5 => RadarTargetType::Asteroid,
-            _ => RadarTargetType::Unknown
-        };
+        let mut p: RadarGetTargetInfo = RadarGetTargetInfo::default();
+        lowlevel::queries::radar_get_target_info(index, (&mut p) as *mut RadarGetTargetInfo);
 
         return (
-            target_type,
-            lowlevel::queries::radar_get_target_distance(index)
+            p.id,
+            RadarTargetType::from_raw(p.target_type),
+            p.distance
         );
     }
 }
@@ -95,6 +89,22 @@ pub enum RadarTargetType
     Missile,
     Shell ,
     Asteroid,
+}
+
+impl RadarTargetType
+{
+    fn from_raw(value: i32) -> RadarTargetType
+    {
+        return match value
+        {
+            0 => RadarTargetType::SpaceBattleShip,
+            1 => RadarTargetType::SpaceHulk,
+            2 => RadarTargetType::Missile,
+            3 => RadarTargetType::Shell,
+            5 => RadarTargetType::Asteroid,
+            _ => RadarTargetType::Unknown
+        };
+    }
 }
 
 /// Get the current bearing of the gun turret with the given index
