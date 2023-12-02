@@ -68,15 +68,11 @@ pub fn radar_trigger()
     }
 }
 
-pub fn gun_configure(index: i32, bearing: f32, elevation: f32, fuse: f32, trigger: bool)
+pub fn gun_configure(index: i32, bearing: f32, elevation: f32, fuse: f32)
 {
     gun_set_bearing(index, bearing);
     gun_set_elevation(index, elevation);
     gun_set_fuse(index, fuse);
-
-    if trigger {
-        gun_trigger(index);
-    }
 }
 
 /// Set the bearing the gun with the given index should begin turning to
