@@ -25,6 +25,17 @@ pub fn engine_set_throttle(throttle: f32)
     }
 }
 
+pub fn radar_configure(angle: f32, bearing: f32, elevation: f32, trigger: bool)
+{
+    radar_set_angle(angle);
+    radar_set_bearing(bearing);
+    radar_set_elevation(elevation);
+
+    if trigger {
+        radar_trigger();
+    }
+}
+
 pub fn radar_set_angle(angle: f32)
 {
     unsafe
@@ -54,6 +65,17 @@ pub fn radar_trigger()
     unsafe
     {
         lowlevel::actions::radar_trigger();
+    }
+}
+
+pub fn gun_configure(index: i32, bearing: f32, elevation: f32, fuse: f32, trigger: bool)
+{
+    gun_set_bearing(index, bearing);
+    gun_set_elevation(index, elevation);
+    gun_set_fuse(index, fuse);
+
+    if trigger {
+        gun_trigger(index);
     }
 }
 

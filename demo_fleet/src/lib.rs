@@ -1,5 +1,3 @@
-use protologic_core::actions::engine_set_throttle;
-
 extern crate protologic_core;
 extern crate rand;
 extern crate rand_chacha;
