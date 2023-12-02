@@ -4,14 +4,17 @@ extern
     /// Get the current amount of fuel available for CPU execution this tick.
     pub fn cpu_get_fuel() -> i64;
 
-    /// Get the X element of the current world space position of this ship
+    /// Get the X element of thecurrent world space position of this ship
     pub fn ship_get_position_x() -> f32;
 
-    /// Get the Y element of the  current world space position of this ship
+    /// Get the Y element of the current world space position of this ship
     pub fn ship_get_position_y() -> f32;
 
-    /// Get the Z element of the  current world space position of this ship
+    /// Get the Z element of the current world space position of this ship
     pub fn ship_get_position_z() -> f32;
+
+    /// Get the XYZ world space position into the given destination in memory
+    pub fn ship_get_position_ptr(dst: i32);
 
     /// Get the X element of the current world space velocity of this ship
     pub fn ship_get_velocity_x() -> f32;
@@ -21,6 +24,9 @@ extern
 
     /// Get the Z element of the  current world space velocity of this ship
     pub fn ship_get_velocity_z() -> f32;
+
+    /// Get the XYZ world space velocity into the given destination in memory
+    pub fn ship_get_velocity_ptr(dst: i32);
 
     /// Get the W element of the orientation quaternion of this ship
     pub fn ship_get_orientation_w() -> f32;
@@ -34,6 +40,9 @@ extern
     /// Get the Z element of the orientation quaternion of this ship
     pub fn ship_get_orientation_z() -> f32;
 
+    /// Get the XYZW orientation of this ship
+    pub fn ship_get_orientation_ptr(dst: i32);
+
     /// Get the X element of the angular_velocity of this ship
     pub fn ship_get_angularvelocity_x() -> f32;
 
@@ -42,6 +51,9 @@ extern
 
     /// Get the Z element of the angular_velocity of this ship
     pub fn ship_get_angularvelocity_z() -> f32;
+
+    /// Get the XYZ angular_velocity of this ship
+    pub fn ship_get_angularvelocity_ptr(dst: i32);
 
     /// Get the current amount of fuel in the tanks for the rocket engines.
     pub fn engine_get_fuel_amount() -> f32;

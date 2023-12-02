@@ -13,54 +13,45 @@ pub fn cpu_get_fuel() -> i64
 /// Get the world space position of this ship
 pub fn ship_get_position() -> (f32, f32, f32)
 {
+    let mut p: (f32, f32, f32) = (0.0, 0.0, 0.0);
     unsafe
     {
-        return (
-            ship_get_position_x(),
-            ship_get_position_y(),
-            ship_get_position_z()
-        );
+        ship_get_position_ptr((&mut p) as *mut (f32, f32, f32) as i32);
     }
+    return p;
 }
 
 /// Get the world space velocity of this ship
 pub fn ship_get_velocity() -> (f32, f32, f32)
 {
+    let mut v: (f32, f32, f32) = (0.0, 0.0, 0.0);
     unsafe
     {
-        return (
-            ship_get_velocity_x(),
-            ship_get_velocity_y(),
-            ship_get_velocity_z()
-        );
+        ship_get_velocity_ptr((&mut v) as *mut (f32, f32, f32) as i32);
     }
+    return v;
 }
 
 /// Get the world space orientation of this ship as a quaternion (WXYZ)
 pub fn ship_get_orientation() -> (f32, f32, f32, f32)
 {
+    let mut q: (f32, f32, f32, f32) = (0.0, 0.0, 0.0, 0.0);
     unsafe
     {
-        return (
-            ship_get_orientation_w(),
-            ship_get_orientation_x(),
-            ship_get_orientation_y(),
-            ship_get_orientation_z()
-        );
+        ship_get_orientation_ptr((&mut q) as *mut (f32, f32, f32, f32) as i32);
     }
+    return q;
 }
 
 /// Get the world space angular velocity of this ship
 pub fn ship_get_angular_velocity() -> (f32, f32, f32)
 {
+    let mut a: (f32, f32, f32) = (0.0, 0.0, 0.0);
     unsafe
     {
-        return (
-            ship_get_angularvelocity_x(),
-            ship_get_angularvelocity_y(),
-            ship_get_angularvelocity_z()
-        );
+        ship_get_angularvelocity_ptr((&mut a) as *mut (f32, f32, f32) as i32);
     }
+    return a;
 }
 
 /// Get the number of targets detected by the radar last time it was triggered
