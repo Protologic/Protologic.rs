@@ -1,6 +1,7 @@
 use std::sync::Mutex;
 use std::sync::OnceLock;
 
+use protologic_core::RadarTargetType;
 use protologic_core::lowlevel::constants::const_get_turretshellspeed;
 use protologic_core::highlevel::queries::*;
 use protologic_core::highlevel::actions::*;
@@ -91,12 +92,12 @@ impl State
             let mut dist = 0f32;
             for i in 0..radar_get_target_count()
             {
-                let (_, t, d) = radar_get_target(i);
-                if t == RadarTargetType::SpaceBattleShip
+                let tgt = radar_get_target(i);
+                if tgt.get_target_type() == RadarTargetType::SpaceBattleShip
                 {
                     detected = true;
-                    dist = d;
-                    println!("Target detected: {:?} @ d:{} b:{}", t, d, self.scan_elevation);
+                    dist = tgt.distance;
+                    println!("Target detected: {:?} @ d:{} b:{}", tgt.get_target_type(), tgt.distance, self.scan_elevation);
                     self.scan_elevation -= self.scan_angle * 4.0;
                     break;
                 }

@@ -123,9 +123,10 @@ extern
 pub struct RadarGetTargetInfo
 {
     pub id: i64,
-    pub target_type: i32,
+    target_type: i32,
     pub distance: f32
 }
+
 impl RadarGetTargetInfo
 {
     pub(crate) fn default() -> RadarGetTargetInfo
@@ -135,5 +136,10 @@ impl RadarGetTargetInfo
             target_type: -1,
             distance: -1f32
         };
+    }
+
+    pub fn get_target_type(&self) -> crate::RadarTargetType
+    {
+        return self.target_type.into();
     }
 }

@@ -64,46 +64,27 @@ pub fn radar_get_target_count() -> i32
 }
 
 /// Get the target ID, type and distance for a given radar detection
-pub fn radar_get_target(index: i32) -> (i64, RadarTargetType, f32)
+pub fn radar_get_target(index: i32) -> RadarGetTargetInfo
 {
     unsafe
     {
         let mut p: RadarGetTargetInfo = RadarGetTargetInfo::default();
         lowlevel::queries::radar_get_target_info(index, (&mut p) as *mut RadarGetTargetInfo);
-
-        return (
-            p.id,
-            RadarTargetType::from_raw(p.target_type),
-            p.distance
-        );
+        return p;
     }
 }
 
-#[derive(Eq, PartialEq, Debug)]
-pub enum RadarTargetType
+/// Copy all radar contacts into the given vec
+pub fn radar_get_targets(output: &mut Vec<RadarGetTargetInfo>)
 {
-    Unknown,
+    let count = radar_get_target_count();
+    output.reserve(count as usize);
 
-    SpaceBattleShip,
-    SpaceHulk,
-    Missile,
-    Shell ,
-    Asteroid,
-}
-
-impl RadarTargetType
-{
-    fn from_raw(value: i32) -> RadarTargetType
+    unsafe
     {
-        return match value
-        {
-            0 => RadarTargetType::SpaceBattleShip,
-            1 => RadarTargetType::SpaceHulk,
-            2 => RadarTargetType::Missile,
-            3 => RadarTargetType::Shell,
-            5 => RadarTargetType::Asteroid,
-            _ => RadarTargetType::Unknown
-        };
+        let start = output.as_mut_ptr();
+        let count = radar_get_target_list(start, count);
+        output.set_len(count as usize);
     }
 }
 
