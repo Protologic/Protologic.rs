@@ -1,7 +1,7 @@
 use std::fmt::{Display, self};
 
 /// All possible "trap" codes
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(i32)]
 pub enum TrapCode
 {
