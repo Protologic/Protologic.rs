@@ -54,7 +54,7 @@ pub fn radar_set_bearing(bearing: f32)
     }
 }
 
-/// Set the radar elevation (-90..90)
+/// Set the radar elevation (degrees)
 pub fn radar_set_elevation(elevation: f32)
 {
     unsafe
