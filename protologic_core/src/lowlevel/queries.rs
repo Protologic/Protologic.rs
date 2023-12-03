@@ -119,6 +119,7 @@ extern
     pub fn gun3_get_refiretime() -> f32;
 }
 
+#[derive(Debug)]
 #[repr(C)]
 pub struct RadarGetTargetInfo
 {
