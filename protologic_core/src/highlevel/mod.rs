@@ -2,7 +2,7 @@ pub mod actions;
 pub mod queries;
 pub mod wasi;
 
-#[derive(Eq, PartialEq, Debug)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum RadarTargetType
 {
     Unknown,

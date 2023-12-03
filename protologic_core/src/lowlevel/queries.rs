@@ -19,10 +19,10 @@ extern
     /// Get the X element of the current world space velocity of this ship
     pub fn ship_get_velocity_x() -> f32;
 
-    /// Get the Y element of the  current world space velocity of this ship
+    /// Get the Y element of the current world space velocity of this ship
     pub fn ship_get_velocity_y() -> f32;
 
-    /// Get the Z element of the  current world space velocity of this ship
+    /// Get the Z element of the current world space velocity of this ship
     pub fn ship_get_velocity_z() -> f32;
 
     /// Get the XYZ world space velocity into the given destination in memory (3 x f32)
@@ -119,7 +119,7 @@ extern
     pub fn gun3_get_refiretime() -> f32;
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq)]
 #[repr(C)]
 pub struct RadarGetTargetInfo
 {

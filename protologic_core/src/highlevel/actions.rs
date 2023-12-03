@@ -36,6 +36,9 @@ pub fn radar_configure(angle: f32, bearing: f32, elevation: f32, trigger: bool)
     }
 }
 
+/// Set the radar arc angle.
+/// Min angle can be retrieved with `const_get_shipradarminangle()`.
+/// Max angle can be retrieved with `const_get_shipradarmaxangle()`.
 pub fn radar_set_angle(angle: f32)
 {
     unsafe
@@ -44,6 +47,7 @@ pub fn radar_set_angle(angle: f32)
     }
 }
 
+/// Set the radar bearing (0..360)
 pub fn radar_set_bearing(bearing: f32)
 {
     unsafe
@@ -52,6 +56,7 @@ pub fn radar_set_bearing(bearing: f32)
     }
 }
 
+/// Set the radar elevation (degrees)
 pub fn radar_set_elevation(elevation: f32)
 {
     unsafe
@@ -60,6 +65,7 @@ pub fn radar_set_elevation(elevation: f32)
     }
 }
 
+/// Trigger the radar to scan for targets and return the results in the next frame
 pub fn radar_trigger()
 {
     unsafe
@@ -91,7 +97,8 @@ pub fn gun_set_bearing(index: i32, bearing: f32)
     }
 }
 
-/// Set the elevation the gun with the given index should begin turning to
+/// Set the elevation the gun with the given index should begin turning to.
+/// Maximum elevation can be retrieved with `const_get_turretmaxelevation()`.
 pub fn gun_set_elevation(index: i32, elevation: f32)
 {
     unsafe
