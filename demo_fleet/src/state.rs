@@ -43,7 +43,7 @@ impl State
         // Turn upwards
         if !self.turned
         {
-            Self::turn_and_stop(1.0, 0.0, 0.0, 800);
+            Self::turn_and_stop(1.0, 0.0, 0.0, 900);
             self.turned = true;
         }
 
@@ -58,7 +58,7 @@ impl State
         // Turn along long axis
         if !self.turned2
         {
-            Self::turn_and_stop(0.0, 0.0, -1.0, 1650);
+            Self::turn_and_stop(0.0, 0.0, -1.0, 1900);
             self.turned2 = true;
         }
 

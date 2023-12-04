@@ -145,3 +145,21 @@ pub fn gun_trigger(index: i32)
         }
     }
 }
+
+/// Draw a sphere in space, helpful for debugging
+pub fn debug_sphere_set(x: f32, y: f32, z: f32, radius: f32, r: f32, g: f32, b: f32)
+{
+    unsafe
+    {
+        lowlevel::actions::debug_sphere_set(x, y, z, radius, r, g, b);
+    }
+}
+
+/// Draw a line in space, helpful for debugging
+pub fn debug_line_set(x1: f32, y1: f32, z1: f32, x2: f32, y2: f32, z2: f32, r: f32, g: f32, b: f32)
+{
+    unsafe
+    {
+        lowlevel::actions::debug_line_set(x1, y1, z1, x2, y2, z2, r, g, b);
+    }
+}

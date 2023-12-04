@@ -61,4 +61,10 @@ extern
 
     /// Fire gun 3 once
     pub fn gun3_trigger();
+
+    /// Draw a sphere in space, helpful for debugging
+    pub fn debug_sphere_set(x: f32, y: f32, z: f32, radius: f32, r: f32, g: f32, b: f32);
+
+    /// Draw a line in space, helpful for debugging
+    pub fn debug_line_set(x1: f32, y1: f32, z1: f32, x2: f32, y2: f32, z2: f32, r: f32, g: f32, b: f32);
 }
