@@ -88,16 +88,17 @@ impl State
             Self::wait_ticks(1);
 
             // Check if we detected anything
+            let pos = ship_get_position();
             let mut detected = false;
             let mut dist = 0f32;
-            for i in 0..radar_get_target_count()
+            for i in 0..radar_get_contact_count()
             {
-                let tgt = radar_get_target(i);
+                let tgt = radar_get_contact(i);
                 if tgt.get_target_type() == RadarTargetType::SpaceBattleShip
                 {
                     detected = true;
-                    dist = tgt.distance;
-                    println!("Target detected: {:?} @ d:{} b:{}", tgt.get_target_type(), tgt.distance, self.scan_elevation);
+                    dist = ((pos.0 - tgt.x).powf(2.0) + (pos.1 - tgt.y).powf(2.0) + (pos.2 - tgt.z).powf(2.0)).sqrt();
+                    println!("Target detected: {:?} @ d:{} b:{}", tgt.get_target_type(), dist, self.scan_elevation);
                     self.scan_elevation -= self.scan_angle * 4.0;
                     break;
                 }
