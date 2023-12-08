@@ -112,8 +112,8 @@ extern
     /// Get the approximate position of the contact with the given index (Z element)
     pub fn radar_get_contact_position_z(index: i32) -> f32;
 
-    /// Get the approximate position of the contact with the given index (Z element)
-    pub fn radar_get_contact_position_ptr(dst: *mut [f32; 3]) -> f32;
+    /// Get the approximate position of the contact
+    pub fn radar_get_contact_position_ptr(index: i32, dst: *mut [f32; 3]);
 
     /// Get info about the contact with the given index
     pub fn radar_get_contact_info(index: i32, dst: *mut RadarGetContactInfo);
