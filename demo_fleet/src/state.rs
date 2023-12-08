@@ -100,6 +100,11 @@ impl State
                     dist = ((pos.0 - tgt.x).powf(2.0) + (pos.1 - tgt.y).powf(2.0) + (pos.2 - tgt.z).powf(2.0)).sqrt();
                     println!("Target detected: {:?} @ d:{} b:{}", tgt.get_target_type(), dist, self.scan_elevation);
                     self.scan_elevation -= self.scan_angle * 4.0;
+
+                    // Draw a line to the target
+                    debug_line_set(tgt.x, tgt.y, tgt.z, pos.0, pos.1, pos.2, 0.8, 0.8, 0.8);
+                    debug_sphere_set(tgt.x, tgt.y, tgt.z, 100.0, 0.7, 0.7, 0.7);
+
                     break;
                 }
             }
