@@ -1,3 +1,4 @@
+use crate::AmmoType;
 use crate::lowlevel::{self};
 use crate::lowlevel::actions::*;
 
@@ -141,6 +142,22 @@ pub fn gun_trigger(index: i32)
             1 => gun1_trigger(),
             2 => gun2_trigger(),
             3 => gun3_trigger(),
+            _ => panic!("Unknown gun index: {}", index),
+        }
+    }
+}
+
+/// Begin reloading the gun with the given index to a specific ammo type
+pub fn gun_reload(index: i32, ammo: AmmoType)
+{
+    unsafe
+    {
+        match index
+        {
+            0 => gun0_reload(ammo.into()),
+            1 => gun0_reload(ammo.into()),
+            2 => gun0_reload(ammo.into()),
+            3 => gun0_reload(ammo.into()),
             _ => panic!("Unknown gun index: {}", index),
         }
     }

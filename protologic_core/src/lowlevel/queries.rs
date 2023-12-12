@@ -130,6 +130,18 @@ extern
     /// Get the number of seconds before gun 0 can fire again
     pub fn gun0_get_refiretime() -> f32;
 
+    /// Get the capacity of the currently loaded magazine in gun0
+    pub fn gun0_get_magazine_capacity() -> i32;
+
+    /// Get the number of shots remaining in the currently loaded magazine in gun0
+    pub fn gun0_get_magazine_remaining() -> i32;
+
+    /// Get the type of shots remaining in the currently loaded magazine in gun0
+    pub fn gun0_get_magazine_type() -> i32;
+
+    // Get the amount of time until the reload is complete for gun0
+    pub fn gun0_get_magazine_reloadtime() -> f32;
+
     /// Get the current bearing of gun 1
     pub fn gun1_get_bearing() -> f32;
 
@@ -138,6 +150,18 @@ extern
 
     /// Get the number of seconds before gun 1 can fire again
     pub fn gun1_get_refiretime() -> f32;
+
+    /// Get the capacity of the currently loaded magazine in gun1
+    pub fn gun1_get_magazine_capacity() -> i32;
+
+    /// Get the number of shots remaining in the currently loaded magazine in gun1
+    pub fn gun1_get_magazine_remaining() -> i32;
+
+    /// Get the type of shots remaining in the currently loaded magazine in gun1
+    pub fn gun1_get_magazine_type() -> i32;
+
+    // Get the amount of time until the reload is complete for gun1
+    pub fn gun1_get_magazine_reloadtime() -> f32;
 
     /// Get the current bearing of gun 2
     pub fn gun2_get_bearing() -> f32;
@@ -148,6 +172,18 @@ extern
     /// Get the number of seconds before gun 2 can fire again
     pub fn gun2_get_refiretime() -> f32;
 
+    /// Get the capacity of the currently loaded magazine in gun2
+    pub fn gun2_get_magazine_capacity() -> i32;
+
+    /// Get the number of shots remaining in the currently loaded magazine in gun2
+    pub fn gun2_get_magazine_remaining() -> i32;
+
+    /// Get the type of shots remaining in the currently loaded magazine in gun2
+    pub fn gun2_get_magazine_type() -> i32;
+
+    // Get the amount of time until the reload is complete for gun2
+    pub fn gun2_get_magazine_reloadtime() -> f32;
+
     /// Get the current bearing of gun 3
     pub fn gun3_get_bearing() -> f32;
 
@@ -156,6 +192,18 @@ extern
 
     /// Get the number of seconds before gun 3 can fire again
     pub fn gun3_get_refiretime() -> f32;
+
+    /// Get the capacity of the currently loaded magazine in gun3
+    pub fn gun3_get_magazine_capacity() -> i32;
+
+    /// Get the number of shots remaining in the currently loaded magazine in gun3
+    pub fn gun3_get_magazine_remaining() -> i32;
+
+    /// Get the type of shots remaining in the currently loaded magazine in gun3
+    pub fn gun3_get_magazine_type() -> i32;
+
+    // Get the amount of time until the reload is complete for gun3
+    pub fn gun3_get_magazine_reloadtime() -> f32;
 }
 
 #[derive(Debug, Clone, PartialEq)]

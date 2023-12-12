@@ -1,3 +1,4 @@
+use crate::AmmoType;
 use crate::lowlevel::{*, self};
 use crate::lowlevel::queries::*;
 
@@ -168,6 +169,70 @@ pub fn gun_get_refiretime(index: i32) -> f32
             1 => gun1_get_refiretime(),
             2 => gun2_get_refiretime(),
             3 => gun3_get_refiretime(),
+            _ => panic!("Unknown gun index: {}", index),
+        }
+    }
+}
+
+/// Get the capacity of the current magazine for the gun turret with the given index
+pub fn gun_get_magazine_capacity(index: i32) -> i32
+{
+    unsafe
+    {
+        match index
+        {
+            0 => gun0_get_magazine_capacity(),
+            1 => gun1_get_magazine_capacity(),
+            2 => gun2_get_magazine_capacity(),
+            3 => gun3_get_magazine_capacity(),
+            _ => panic!("Unknown gun index: {}", index),
+        }
+    }
+}
+
+/// Get the number of shots in the magazine for the gun turret with the given index
+pub fn gun_get_magazine_remaining(index: i32) -> i32
+{
+    unsafe
+    {
+        match index
+        {
+            0 => gun0_get_magazine_remaining(),
+            1 => gun1_get_magazine_remaining(),
+            2 => gun2_get_magazine_remaining(),
+            3 => gun3_get_magazine_remaining(),
+            _ => panic!("Unknown gun index: {}", index),
+        }
+    }
+}
+
+/// Get the type of ammo loaded in the magazine for the gun turret with the given index
+pub fn gun_get_magazine_type(index: i32) -> AmmoType
+{
+    unsafe
+    {
+        match index
+        {
+            0 => gun0_get_magazine_type(),
+            1 => gun1_get_magazine_type(),
+            2 => gun2_get_magazine_type(),
+            3 => gun3_get_magazine_type(),
+            _ => panic!("Unknown gun index: {}", index),
+        }.into()
+    }
+}
+
+/// Get the amount of time remaining before the current reload is completed for the gun turret with the given index
+pub fn gun_get_magazine_reloadtime(index: i32) -> f32
+{
+    unsafe
+    {
+        match index
+        {
+            0 => gun0_get_magazine_reloadtime(),
+            1 => gun0_get_magazine_reloadtime(),
+            2 => gun0_get_magazine_reloadtime(),
+            3 => gun0_get_magazine_reloadtime(),
             _ => panic!("Unknown gun index: {}", index),
         }
     }

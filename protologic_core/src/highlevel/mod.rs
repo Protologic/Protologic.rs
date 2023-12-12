@@ -10,8 +10,12 @@ pub enum RadarTargetType
     SpaceBattleShip,
     SpaceHulk,
     Missile,
-    Shell ,
+    //NuclearShell,
+    //Explosion
     Asteroid,
+    //VictoryMarker
+    FlakShell,
+    APShell,
 }
 
 impl From<i32> for RadarTargetType
@@ -23,9 +27,48 @@ impl From<i32> for RadarTargetType
             0 => RadarTargetType::SpaceBattleShip,
             1 => RadarTargetType::SpaceHulk,
             2 => RadarTargetType::Missile,
-            3 => RadarTargetType::Shell,
+            //3 => RadarTargetType::NuclearShell,
+            //4 => RadarTargetType::Explosion,
             5 => RadarTargetType::Asteroid,
-            _ => RadarTargetType::Unknown
+            //6 => RadarTargetType::VictoryMarker,
+            7 => RadarTargetType::FlakShell,
+            8 => RadarTargetType::APShell,
+            _ => RadarTargetType::Unknown,
+        };
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum AmmoType
+{
+    Flak,
+    ArmourPiercing,
+
+    Unknown
+}
+
+impl From<i32> for AmmoType
+{
+    fn from(item: i32) -> Self
+    {
+        return match item
+        {
+            0 => AmmoType::Flak,
+            1 => AmmoType::ArmourPiercing,
+            _ => AmmoType::Unknown,
+        };
+    }
+}
+
+impl Into<i32> for AmmoType
+{
+    fn into(self) -> i32
+    {
+        return match self
+        {
+            AmmoType::Flak => 0,
+            AmmoType::ArmourPiercing => 1,
+            AmmoType::Unknown => i32::MAX
         };
     }
 }

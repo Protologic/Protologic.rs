@@ -26,6 +26,9 @@ extern
     /// Fire gun 0 once
     pub fn gun0_trigger();
 
+    /// Begin reloading gun 0 with a specific ammo type
+    pub fn gun0_reload(ammo: i32);
+
     /// Set the bearing gun 1 should begin turning to
     pub fn gun1_set_bearing(bearing: f32);
 
@@ -37,6 +40,9 @@ extern
 
     /// Fire gun 1 once
     pub fn gun1_trigger();
+
+    /// Begin reloading gun 1 with a specific ammo type
+    pub fn gun1_reload(ammo: i32);
 
     /// Set the bearing gun 2 should begin turning to
     pub fn gun2_set_bearing(bearing: f32);
@@ -50,6 +56,9 @@ extern
     /// Fire gun 2 once
     pub fn gun2_trigger();
 
+    /// Begin reloading gun 2 with a specific ammo type
+    pub fn gun2_reload(ammo: i32);
+
     /// Set the bearing gun 3 should begin turning to
     pub fn gun3_set_bearing(bearing: f32);
 
@@ -61,6 +70,9 @@ extern
 
     /// Fire gun 3 once
     pub fn gun3_trigger();
+
+    /// Begin reloading gun 3 with a specific ammo type
+    pub fn gun3_reload(ammo: i32);
 
     /// Draw a sphere in space, helpful for debugging
     pub fn debug_sphere_set(x: f32, y: f32, z: f32, radius: f32, r: f32, g: f32, b: f32);
