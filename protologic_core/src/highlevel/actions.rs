@@ -155,9 +155,9 @@ pub fn gun_reload(index: i32, ammo: AmmoType)
         match index
         {
             0 => gun0_reload(ammo.into()),
-            1 => gun0_reload(ammo.into()),
-            2 => gun0_reload(ammo.into()),
-            3 => gun0_reload(ammo.into()),
+            1 => gun1_reload(ammo.into()),
+            2 => gun2_reload(ammo.into()),
+            3 => gun3_reload(ammo.into()),
             _ => panic!("Unknown gun index: {}", index),
         }
     }
