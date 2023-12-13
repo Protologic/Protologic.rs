@@ -230,9 +230,9 @@ pub fn gun_get_magazine_reloadtime(index: i32) -> f32
         match index
         {
             0 => gun0_get_magazine_reloadtime(),
-            1 => gun0_get_magazine_reloadtime(),
-            2 => gun0_get_magazine_reloadtime(),
-            3 => gun0_get_magazine_reloadtime(),
+            1 => gun1_get_magazine_reloadtime(),
+            2 => gun2_get_magazine_reloadtime(),
+            3 => gun3_get_magazine_reloadtime(),
             _ => panic!("Unknown gun index: {}", index),
         }
     }
