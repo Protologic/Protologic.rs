@@ -6,6 +6,7 @@ use protologic_core::lowlevel::constants::const_get_turretshellspeed;
 use protologic_core::highlevel::queries::*;
 use protologic_core::highlevel::actions::*;
 use protologic_core::highlevel::wasi::*;
+use protologic_core::lowlevel::queries::RadarGetContactInfo;
 
 pub struct State
 {
@@ -14,6 +15,7 @@ pub struct State
     burned: bool,
     scan_elevation: f32,
     scan_angle: f32,
+    contacts: Vec<RadarGetContactInfo>
 }
 
 static STATE: OnceLock<Mutex<State>> = OnceLock::new();
@@ -35,6 +37,7 @@ impl State
             burned: false,
             scan_elevation: 0f32,
             scan_angle: 10f32,
+            contacts: Vec::new(),
         };
     }
 
@@ -91,9 +94,9 @@ impl State
             let pos = ship_get_position();
             let mut detected = false;
             let mut dist = 0f32;
-            for i in 0..radar_get_contact_count()
+            radar_get_contacts(&mut self.contacts);
+            for tgt in self.contacts.iter()
             {
-                let tgt = radar_get_contact(i);
                 if tgt.get_target_type() == RadarTargetType::SpaceBattleShip
                 {
                     detected = true;

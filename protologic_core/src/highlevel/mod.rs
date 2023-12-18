@@ -1,6 +1,7 @@
 pub mod actions;
 pub mod queries;
 pub mod wasi;
+pub mod constants;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum RadarTargetType
@@ -50,6 +51,19 @@ pub enum AmmoType
 impl From<i32> for AmmoType
 {
     fn from(item: i32) -> Self
+    {
+        return match item
+        {
+            0 => AmmoType::Flak,
+            1 => AmmoType::ArmourPiercing,
+            _ => AmmoType::Unknown,
+        };
+    }
+}
+
+impl From<u16> for AmmoType
+{
+    fn from(item: u16) -> Self
     {
         return match item
         {
