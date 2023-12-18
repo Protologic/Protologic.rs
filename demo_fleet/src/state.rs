@@ -2,7 +2,7 @@ use std::sync::Mutex;
 use std::sync::OnceLock;
 
 use protologic_core::RadarTargetType;
-use protologic_core::lowlevel::constants::const_get_turretshellspeed;
+use protologic_core::constants;
 use protologic_core::highlevel::queries::*;
 use protologic_core::highlevel::actions::*;
 use protologic_core::highlevel::wasi::*;
@@ -116,7 +116,7 @@ impl State
             if detected
             {
                 Self::wait_ticks(10);
-                let fuse = dist / unsafe { const_get_turretshellspeed() } - 0.1;
+                let fuse = dist / constants::turret_shell_speed() - 0.1;
                 gun_set_fuse(0, fuse * 1.05);
                 gun_set_fuse(1, fuse * 1.0);
                 gun_set_fuse(2, fuse * 0.95);
