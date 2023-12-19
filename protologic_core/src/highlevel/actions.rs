@@ -180,3 +180,11 @@ pub fn debug_line_set(x1: f32, y1: f32, z1: f32, x2: f32, y2: f32, z2: f32, r: f
         lowlevel::actions::debug_line_set(x1, y1, z1, x2, y2, z2, r, g, b);
     }
 }
+
+pub fn debug_pause()
+{
+    unsafe
+    {
+        lowlevel::actions::debug_pause();
+    }
+}

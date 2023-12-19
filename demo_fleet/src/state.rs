@@ -124,13 +124,14 @@ impl State
 
                 // wait a short time between each fire so the shells don';'t set each other off
                 gun_trigger(0);
-                Self::wait_ticks(125);
+                Self::wait_ticks(255);
                 gun_trigger(1);
-                Self::wait_ticks(125);
+                Self::wait_ticks(255);
                 gun_trigger(2);
-                Self::wait_ticks(125);
+                Self::wait_ticks(255);
                 gun_trigger(3);
                 println!("Fire!");
+                Self::wait_ticks(255);
             }
         }
     }

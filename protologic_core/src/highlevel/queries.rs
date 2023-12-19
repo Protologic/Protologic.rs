@@ -42,7 +42,7 @@ pub fn ship_get_velocity() -> (f32, f32, f32)
     return get_quickstate().read_velocity();
 }
 
-/// Get the world space orientation of this ship as a quaternion (WXYZ)
+/// Get the world space orientation of this ship as a quaternion (XYZW)
 pub fn ship_get_orientation() -> (f32, f32, f32, f32)
 {
     return get_quickstate().read_orientation();
