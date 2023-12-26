@@ -42,6 +42,12 @@ pub fn ship_get_velocity() -> (f32, f32, f32)
     return get_quickstate().read_velocity();
 }
 
+/// Get the current mass of this ship (hull mass + fuel mass)
+pub fn ship_get_mass() -> f32
+{
+    return get_quickstate().read_mass();
+}
+
 /// Get the world space orientation of this ship as a quaternion (XYZW)
 pub fn ship_get_orientation() -> (f32, f32, f32, f32)
 {

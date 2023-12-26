@@ -6,7 +6,8 @@ pub mod constants;
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum RadarTargetType
 {
-    Unknown,
+    /// This contact is invalid, most likely indicates a bug in the game if you have received this value.
+    Invalid,
 
     SpaceBattleShip,
     SpaceHulk,
@@ -34,7 +35,8 @@ impl From<i32> for RadarTargetType
             //6 => RadarTargetType::VictoryMarker,
             7 => RadarTargetType::FlakShell,
             8 => RadarTargetType::APShell,
-            _ => RadarTargetType::Unknown,
+
+            _ => RadarTargetType::Invalid,
         };
     }
 }

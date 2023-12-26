@@ -15,7 +15,8 @@ pub struct State
     burned: bool,
     scan_elevation: f32,
     scan_angle: f32,
-    contacts: Vec<RadarGetContactInfo>
+    contacts: Vec<RadarGetContactInfo>,
+    handles: Vec<DebugShapeHandle>,
 }
 
 static STATE: OnceLock<Mutex<State>> = OnceLock::new();
@@ -38,6 +39,7 @@ impl State
             scan_elevation: 0f32,
             scan_angle: 10f32,
             contacts: Vec::new(),
+            handles: Vec::new(),
         };
     }
 
@@ -105,8 +107,9 @@ impl State
                     self.scan_elevation -= self.scan_angle * 4.0;
 
                     // Draw a line to the target
-                    debug_line_set(tgt.x, tgt.y, tgt.z, pos.0, pos.1, pos.2, 0.8, 0.8, 0.8);
-                    debug_sphere_set(tgt.x, tgt.y, tgt.z, 100.0, 0.7, 0.7, 0.7);
+                    self.handles.clear();
+                    self.handles.push(debug_line_create(tgt.x, tgt.y, tgt.z, pos.0, pos.1, pos.2, 0.8, 0.8, 0.8));
+                    self.handles.push(debug_sphere_create(tgt.x, tgt.y, tgt.z, 200.0, 0.7, 0.7, 0.7));
 
                     break;
                 }

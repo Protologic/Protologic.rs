@@ -182,6 +182,11 @@ impl QuickStateBox
     {
         return self.read_f32(578);
     }
+
+    pub fn read_mass(&self) -> f32
+    {
+        return self.read_f32(582);
+    }
 }
 
 #[link(wasm_import_module = "protologic")]
