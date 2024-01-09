@@ -1,11 +1,26 @@
+#![allow(non_upper_case_globals)]
+
+extern crate paste;
+use self::paste::paste;
+
 macro_rules! define_protologic_const
 {
     ($wasm_name:ident, $rust_name:ident, $t:ty, $doc:literal) =>
     {
+        paste! {
+            static mut [<CACHE_ $rust_name>]: Option<$t> = None;
+        }
+
         #[doc=$doc]
         pub fn $rust_name() -> $t
         {
-            return unsafe { $wasm_name() };
+            unsafe
+            {
+                if paste! { [<CACHE_ $rust_name>] }.is_none() {
+                    paste! { [<CACHE_ $rust_name>] = Some($wasm_name()); }
+                }
+                return paste! { [<CACHE_ $rust_name>] }.unwrap();
+            }
         }
 
         #[link(wasm_import_module = "protologic")]
@@ -46,3 +61,6 @@ define_protologic_const!(const_get_apshelldamage, turret_shell_damage_ap, f32, "
 
 define_protologic_const!(const_get_shipradarminangle, ship_radar_angle_min, f32, "Minimum angle of ship RADAR.");
 define_protologic_const!(const_get_shipradarmaxangle, ship_radar_angle_max, f32, "Maximum anfle of ship RADAR.");
+
+define_protologic_const!(const_get_shipmissilelaunchercount, ship_missile_launcher_count, i32, "Number of missile launchers mounted on the ship.");
+define_protologic_const!(const_get_shipmissilelauncherreloadtime, ship_missile_launcher_reload_time, f32, "Number of seconds required to reload a missile launcher.");

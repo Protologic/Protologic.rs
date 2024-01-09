@@ -69,14 +69,15 @@ pub fn radar_get_contact_count() -> i32
 /// Get all info about all radar targets
 pub fn radar_get_contacts(output: &mut Vec<RadarGetContactInfo>)
 {
-    let count = radar_get_contact_count();
+    let pre_count = radar_get_contact_count();
     output.clear();
-    output.reserve(count as usize);
+    output.reserve(pre_count as usize);
 
     unsafe
     {
         let start = output.as_mut_ptr();
-        let count = radar_get_contact_list(start, count);
+        let count = radar_get_contact_list(start, pre_count);
+        assert!(count <= pre_count);
         output.set_len(count as usize);
     }
 }
@@ -127,4 +128,16 @@ pub fn gun_get_magazine_type(index: i32) -> AmmoType
 pub fn gun_get_magazine_reloadtime(index: i32) -> f32
 {
     return get_quickstate().read_gun_reloadtime(index);
+}
+
+/// Get the total number of unfired missiles remaining 
+pub fn missilelauncher_get_stockpile() -> u16
+{
+    return get_quickstate().read_missilelauncher_stockpile();
+}
+
+/// Get the amount of time remaining before the current reload is completed for the missile launcher turret with the given index
+pub fn missilelauncher_get_reloadtime(index: i32) -> f32
+{
+    return get_quickstate().read_missilelauncher_reloadtime(index);
 }

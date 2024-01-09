@@ -1,6 +1,6 @@
 [package]
 name = "protologic_core"
-version = "4.2.0"
+version = "5.0.0"
 description = "Rust bindings for Protologic"
 homepage = "https://github.com/Protologic"
 repository = "https://github.com/Protologic/Protologic.rs"
@@ -9,3 +9,4 @@ license = "MIT-0"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+paste = "1.0"

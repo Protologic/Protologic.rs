@@ -187,6 +187,20 @@ impl QuickStateBox
     {
         return self.read_f32(582);
     }
+
+    pub fn read_missilelauncher_stockpile(&self) -> u16
+    {
+        return self.read_u16(586);
+    }
+
+    pub fn read_missilelauncher_reloadtime(&self, index: i32) -> f32
+    {
+        if index < 0 || index > crate::constants::ship_missile_launcher_count() {
+            panic!("Unknown missile launcher: {}", index)
+        }
+
+        return self.read_f32((588 + index * 4) as usize);
+    }
 }
 
 #[link(wasm_import_module = "protologic")]

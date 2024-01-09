@@ -1,23 +1,67 @@
+use std::env;
+
 extern crate protologic_core;
 extern crate rand;
 extern crate rand_chacha;
 
-mod state;
+mod ship;
+mod missile;
+
+use protologic_core::{
+    highlevel::actions::*,
+    utils::*,
+    queries::*,
+    constants::*,
+};
 
 /// Called by the game every frame
 #[no_mangle]
 pub extern fn tick()
 {
-    state::State::get_state_singleton().lock().unwrap().tick();
+    // Print all environment variables
+    for (k, v) in env::vars() {
+        println!("ENV: {} = {}", k, v);
+    }
+
+    // This might be a missile or a ship.
+    // Check which one we are and run the appropriate code.
+    let entity_type = env::var("Type").unwrap();
+    match entity_type.as_str()
+    {
+        "Missile" => missile::run(),
+        "Ship" => ship::run(),
+
+        _ => panic!("Unknown type! {}", entity_type),
+    }
 }
 
-/// Called by the game whenever a "trap" occurs in the tick execution.
-#[no_mangle]
-pub extern fn trap_handler(trap_code: protologic_core::trap::TrapCode)
+fn turn_and_stop(x: f32, y: f32, z: f32, ticks: u32)
 {
-    // Get the current state (which has just been interrupted by a trap)
-    let mut state = state::State::get_state_singleton().lock().unwrap();
+    wheel_set_torque(x, y, z);
+    wait_ticks(ticks);
+    stop_turning();
+}
 
-    // Call the trap handler on that state. This produces an entirely new state, to allow for error recovery.
-    *state = state.trap_handler(trap_code);
+fn stop_turning()
+{
+    // Loop until we stop turning
+    let torque = ship_wheel_torque();
+    loop
+    {
+        let angular_vel = ship_get_angular_velocity();
+        if f32::abs(angular_vel.0) < 0.001 && f32::abs(angular_vel.1) < 0.001 && f32::abs(angular_vel.2) < 0.001 {
+            break;
+        }
+
+        // Calculate necessary torque setting to stop in the next tick, this will be clamped to [-1, 1] by the game
+        let mass = ship_get_mass();
+        let x = (angular_vel.0 * mass / torque) / tick_duration();
+        let y = (angular_vel.1 * mass / torque) / tick_duration();
+        let z = (angular_vel.2 * mass / torque) / tick_duration();
+        wheel_set_torque(-x, -y, -z);
+        wait_ticks(1);
+    }
+
+    // Stop turning
+    wheel_set_torque(0.0, 0.0, 0.0);
 }

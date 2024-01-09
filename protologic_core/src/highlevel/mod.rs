@@ -88,3 +88,41 @@ impl Into<i32> for AmmoType
         };
     }
 }
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum MissileEngineType
+{
+    LowThrust,
+    MedThrust,
+    HighThrust
+}
+
+impl Into<i32> for MissileEngineType
+{
+    fn into(self) -> i32
+    {
+        return match self
+        {
+            MissileEngineType::LowThrust => 0,
+            MissileEngineType::MedThrust => 1,
+            MissileEngineType::HighThrust => 2
+        };
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum MissileWarheadType
+{
+    Nuclear,
+}
+
+impl Into<i32> for MissileWarheadType
+{
+    fn into(self) -> i32
+    {
+        return match self
+        {
+            MissileWarheadType::Nuclear => 0,
+        };
+    }
+}

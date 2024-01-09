@@ -27,9 +27,7 @@ The project is split into two Rust "crates".
 
 ### demo_fleet
 
-`demo_fleet` contains a simple demo fleet. `lib.rs` is the root of this project and contains 2 functions which the game will call. Your fleet **must** implement both of these methods!
-
-The `tick` method is called by the game every frame.
+`demo_fleet` contains a simple demo fleet. `lib.rs` is the root of this project and contains a `tick` function that the game will call every tick:
 ```rust
 #[no_mangle]
 pub extern fn tick()
@@ -38,20 +36,11 @@ pub extern fn tick()
 }
 ```
 
-The `trap_handler` method is called if a fatal trap terminates execution of your program (e.g. a `panic`). You can use this to recover from errors, for example the `demo_fleet` simply recreates a new `State` to replace the old one.
-```rust
-#[no_mangle]
-pub extern fn trap_handler(trap_code: protologic_core::trap::TrapCode)
-{
-    // Something went wrong!
-}
-```
-
 `state.rs` is the main implementation of the demo fleet. You can delete all of this, or you can use it as an example framework to get started.
 
 ## Special Methods
 
-If your code calls the special method `sched_yield()` then execution of your program will be _immediately_ suspended, execution will resume from that point next frame instead of calling `main()`. This allows you to write simpler programs, for example:
+If your code calls the special method `sched_yield()` then execution of your program will be _immediately_ suspended, execution will resume from that point next frame instead of calling `tick()`. This allows you to write simpler programs, for example:
 
 ```rust
 radar_trigger(); // Trigger radar, results will be available next frame

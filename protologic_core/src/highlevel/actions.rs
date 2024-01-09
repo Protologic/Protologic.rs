@@ -1,4 +1,4 @@
-use crate::AmmoType;
+use crate::{AmmoType, MissileEngineType, MissileWarheadType};
 use crate::lowlevel::{self};
 use crate::lowlevel::actions::*;
 
@@ -163,23 +163,20 @@ pub fn gun_reload(index: i32, ammo: AmmoType)
     }
 }
 
-/// Draw a sphere in space, helpful for debugging
-#[deprecated(note="Use `debug_sphere_create` instead")]
-pub fn debug_sphere_set(x: f32, y: f32, z: f32, radius: f32, r: f32, g: f32, b: f32)
+pub fn missilelauncher_trigger(index: i32)
 {
     unsafe
     {
-        lowlevel::actions::debug_sphere_set(x, y, z, radius, r, g, b);
+        lowlevel::actions::missilelauncher_trigger(index);
     }
 }
 
-/// Draw a sphere in space, helpful for debugging. Returns the ID of this shape, use debug_destroy to remove it.
-#[deprecated(note="Use `debug_line_create` instead")]
-pub fn debug_line_set(x1: f32, y1: f32, z1: f32, x2: f32, y2: f32, z2: f32, r: f32, g: f32, b: f32)
+pub fn missilelauncher_configure(index: i32, engine: MissileEngineType, warhead: MissileWarheadType)
 {
     unsafe
     {
-        lowlevel::actions::debug_line_set(x1, y1, z1, x2, y2, z2, r, g, b);
+        lowlevel::actions::missilelauncher_set_enginetype(index, engine.into());
+        lowlevel::actions::missilelauncher_set_warheadtype(index, warhead.into());
     }
 }
 
