@@ -93,5 +93,5 @@ extern
     pub fn missilelauncher_set_enginetype(index: i32, engine_type: i32);
 
     /// Re-arm the missile in the given launcher with a new warhead type
-    pub fn missilelauncher_set_warheadtype(index: i32, engine_type: i32);
+    pub fn missilelauncher_set_warheadtype(index: i32, warhead_type: i32);
 }
