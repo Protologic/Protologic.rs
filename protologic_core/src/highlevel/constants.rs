@@ -1,30 +1,47 @@
 #![allow(non_upper_case_globals)]
 
 extern crate paste;
-use self::paste::paste;
 
 macro_rules! define_protologic_const
 {
     ($wasm_name:ident, $rust_name:ident, $t:ty, $doc:literal) =>
     {
-        paste! {
-            static mut [<CACHE_ $rust_name>]: Option<$t> = None;
+        #[cfg(not(feature="mock_protologic"))]
+        mod $rust_name {
+            use crate::constants::paste::paste;
+
+            paste! {
+                static mut [<CACHE_ $rust_name>]: Option<$t> = None;
+            }
+
+            #[doc=$doc]
+            pub fn $rust_name() -> $t
+            {
+                unsafe
+                {
+                    if paste! { [<CACHE_ $rust_name>] }.is_none() {
+                        paste! { [<CACHE_ $rust_name>] = Some($wasm_name()); }
+                    }
+                    return paste! { [<CACHE_ $rust_name>] }.unwrap();
+                }
+            }
+
+            #[cfg(not(test))]
+            #[link(wasm_import_module = "protologic")]
+            extern { fn $wasm_name() -> $t; }
         }
 
-        #[doc=$doc]
-        pub fn $rust_name() -> $t
+        #[allow(unused)]
+        #[cfg(feature = "mock_protologic")]
+        mod $rust_name
         {
-            unsafe
+            pub fn $rust_name() -> $t
             {
-                if paste! { [<CACHE_ $rust_name>] }.is_none() {
-                    paste! { [<CACHE_ $rust_name>] = Some($wasm_name()); }
-                }
-                return paste! { [<CACHE_ $rust_name>] }.unwrap();
+                panic!("extern called in test mode!");
             }
         }
 
-        #[link(wasm_import_module = "protologic")]
-        extern { fn $wasm_name() -> $t; }
+        pub use self::$rust_name::$rust_name;
     }
 }
 

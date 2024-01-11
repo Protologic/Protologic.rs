@@ -1,13 +1,11 @@
 use std::{alloc::Layout, sync::OnceLock};
 
-use crate::AmmoType;
+static GENERAL_QUICK_STATE: OnceLock<QuickStateBox> = OnceLock::new();
 
-static QUICK_STATE: OnceLock<QuickStateBox> = OnceLock::new();
-
-pub fn get_quickstate() -> &'static QuickStateBox
+pub fn get_general_quickstate() -> &'static QuickStateBox
 {
     const SIZE : usize = 1024usize;
-    return QUICK_STATE.get_or_init(||
+    return GENERAL_QUICK_STATE.get_or_init(||
     {
         // Allocate a large buffer and tell the engine about it
         let layout = Layout::new::<[u8; SIZE]>();
@@ -20,7 +18,7 @@ pub fn get_quickstate() -> &'static QuickStateBox
 
 pub struct QuickStateBox
 {
-    ptr: *mut u8,
+    pub ptr: *mut u8,
 }
 
 unsafe impl Sync for QuickStateBox { }
@@ -28,7 +26,7 @@ unsafe impl Send for QuickStateBox { }
 
 impl QuickStateBox
 {
-    fn read_vector3(&self, addr: usize) -> (f32, f32, f32)
+    pub fn read_vector3(&self, addr: usize) -> (f32, f32, f32)
     {
         unsafe
         {
@@ -39,7 +37,7 @@ impl QuickStateBox
         }
     }
 
-    fn read_quaternion_xyzw(&self, addr: usize) -> (f32, f32, f32, f32)
+    pub fn read_quaternion_xyzw(&self, addr: usize) -> (f32, f32, f32, f32)
     {
         unsafe
         {
@@ -51,7 +49,7 @@ impl QuickStateBox
         }
     }
 
-    fn read_i32(&self, addr: usize) -> i32
+    pub fn read_i32(&self, addr: usize) -> i32
     {
         unsafe
         {
@@ -59,7 +57,7 @@ impl QuickStateBox
         }
     }
 
-    fn read_f32(&self, addr: usize) -> f32
+    pub fn read_f32(&self, addr: usize) -> f32
     {
         unsafe
         {
@@ -67,7 +65,7 @@ impl QuickStateBox
         }
     }
 
-    fn read_u16(&self, addr: usize) -> u16
+    pub fn read_u16(&self, addr: usize) -> u16
     {
         unsafe
         {
@@ -75,147 +73,18 @@ impl QuickStateBox
         }
     }
 
-    pub fn read_position(&self) -> (f32, f32, f32)
+    pub fn read_u64(&self, addr: usize) -> u64
     {
-        return self.read_vector3(0);
-    }
-
-    pub fn read_velocity(&self) -> (f32, f32, f32)
-    {
-        return self.read_vector3(12);
-    }
-
-    pub fn read_orientation(&self) -> (f32, f32, f32, f32)
-    {
-        return self.read_quaternion_xyzw(24);
-    }
-
-    pub fn read_angular_velocity(&self) -> (f32, f32, f32)
-    {
-        return self.read_vector3(40);
-    }
-
-    pub fn read_radar_contact_count(&self) -> i32
-    {
-        return self.read_i32(52);
-    }
-
-    pub fn read_gun_bearing(&self, index: i32) -> f32
-    {
-        if index < 0 || index > 4 {
-            panic!("Unknown gun index: {}", index)
+        unsafe
+        {
+            return std::ptr::read_unaligned(self.ptr.add(addr) as *const u64);
         }
-
-        return self.read_f32((56 + index * 4) as usize);
-    }
-
-    pub fn read_gun_elevation(&self, index: i32) -> f32
-    {
-        if index < 0 || index > 4 {
-            panic!("Unknown gun index: {}", index)
-        }
-
-        return self.read_f32((152 + index * 4) as usize);
-    }
-
-    pub fn read_gun_refiretime(&self, index: i32) -> f32
-    {
-        if index < 0 || index > 4 {
-            panic!("Unknown gun index: {}", index)
-        }
-
-        return self.read_f32((244 + index * 4) as usize);
-    }
-
-    pub fn read_gun_reloadtime(&self, index: i32) -> f32
-    {
-        if index < 0 || index > 4 {
-            panic!("Unknown gun index: {}", index)
-        }
-
-        return self.read_f32((336 + index * 4) as usize);
-    }
-
-    pub fn read_gun_magazinecapacity(&self, index: i32) -> u16
-    {
-        if index < 0 || index > 4 {
-            panic!("Unknown gun index: {}", index)
-        }
-
-        return self.read_u16((428 + index * 2) as usize);
-    }
-
-    pub fn read_gun_magazineremaining(&self, index: i32) -> u16
-    {
-        if index < 0 || index > 4 {
-            panic!("Unknown gun index: {}", index)
-        }
-
-        return self.read_u16((474 + index * 2) as usize);
-    }
-
-    pub fn read_gun_magazinetype(&self, index: i32) -> AmmoType
-    {
-        if index < 0 || index > 4 {
-            panic!("Unknown gun index: {}", index)
-        }
-
-        return self.read_u16((520 + index * 2) as usize).into();
-    }
-
-    pub fn read_engine_fuelamount(&self) -> f32
-    {
-        return self.read_f32(566);
-    }
-
-    pub fn read_engine_fuelcapacity(&self) -> f32
-    {
-        return self.read_f32(570);
-    }
-
-    pub fn read_engine_throttle(&self) -> f32
-    {
-        return self.read_f32(574);
-    }
-
-    pub fn read_radar_noise(&self) -> f32
-    {
-        return self.read_f32(578);
-    }
-
-    pub fn read_mass(&self) -> f32
-    {
-        return self.read_f32(582);
-    }
-
-    pub fn read_missilelauncher_stockpile(&self) -> u16
-    {
-        return self.read_u16(586);
-    }
-
-    pub fn read_missilelauncher_reloadtime(&self, index: i32) -> f32
-    {
-        if index < 0 || index > crate::constants::ship_missile_launcher_count() {
-            panic!("Unknown missile launcher: {}", index)
-        }
-
-        return self.read_f32((588 + index * 4) as usize);
     }
 }
 
-#[link(wasm_import_module = "protologic")]
-extern
-{
-    /// Set the address that the engine will write data into for quick access
-    pub fn sharedmemory_set_readaddress(addr: *mut u8, len: i32);
-
-    /// Get the current amount of fuel available for CPU execution this tick.
-    pub fn cpu_get_fuel() -> i64;
-
-    /// Get all info about all radar targets
-    /// Returns the number of contacts read into the buffer, never more than `len` parameter.
-    pub fn radar_get_contact_list(ptr: *mut RadarGetContactInfo, len: i32) -> i32;
-}
+protologic_define_extern!(pub fn sharedmemory_set_readaddress(addr: *mut u8, len: i32));
+protologic_define_extern!(pub fn cpu_get_fuel() -> i64);
+protologic_define_extern!(pub fn radar_get_contact_list(ptr: *mut super::RadarGetContactInfo, len: i32) -> i32);
 
 #[derive(Debug, Clone, PartialEq)]
 #[repr(C)]

@@ -6,6 +6,7 @@ extern crate rand_chacha;
 
 mod ship;
 mod missile;
+mod radio;
 
 use protologic_core::{
     highlevel::actions::*,

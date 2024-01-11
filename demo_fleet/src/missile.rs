@@ -4,17 +4,20 @@ use rand::{prelude::*, distributions::Uniform};
 use protologic_core::{
     highlevel::actions::*,
     utils::*,
-    queries::*,
-    RadarTargetType, wasi::sched_yield,
+    radio::*,
+    wasi::sched_yield,
 };
 
-use crate::{turn_and_stop, stop_turning};
+use crate::turn_and_stop;
 
 pub fn run()
 {
+    // Configure radio to receive all messages
+    radio_receive_filter(0, 0);
+
     // Pulse the engines a bit to clear the ship
     engine_set_throttle(1.0);
-    wait_time(Duration::from_secs_f32(1f32));
+    wait_time(Duration::from_secs_f32(0.1f32));
     engine_set_throttle(0.0);
 
     // Turn in a random direction for a random amount of time
@@ -26,57 +29,20 @@ pub fn run()
     let z = xyz.sample(&mut rng);
     turn_and_stop(x, y, z, ticks);
 
-    // Fire the engines
+    // Pulse the engines to separate from other missiles
     engine_set_throttle(1.0);
-    wait_time(Duration::from_secs_f32(5f32));
+    wait_time(Duration::from_secs_f32(0.1f32));
     engine_set_throttle(0.0);
 
-    // Spin end over end, looking for radar contacts
-    wheel_set_torque(0.0, 1.0, 0.0);
-    wait_time(Duration::from_secs_f32(4f32));
-
-    // Wait for a contact
-    let mut contacts = Vec::new();
+    // Wait for a radio message
+    let mut messages = Vec::new();
     loop {
-        wait_ticks(1);
+        radio_receive(&mut messages);
+        sched_yield();
 
-        // Get contacts, skip to next tick if there are none
-        radar_get_contacts(&mut contacts);
-        if contacts.len() == 0 {
-            continue;
-        }
-
-        // Get ship contacts, skip to next tick if there are none
-        let target = contacts.iter()
-            .filter(|x| x.get_target_type() == RadarTargetType::SpaceBattleShip)
-            .choose(&mut rng);
-        if target.is_none() {
-            continue;
-        }
-
-        // Target acquired
-        let target = target.unwrap();
-        println!("Found ship from missile!");
-
-        // Stop turning
-        stop_turning();
-
-        // Burn for the target
-        engine_set_throttle(1.0);
-
-        // As soon as the target is lost, self destruct
-        loop
-        {
-            radar_get_contacts(&mut contacts);
-            let target = contacts.iter()
-                .filter(|x| x.get_target_type() == RadarTargetType::SpaceBattleShip)
-                .choose(&mut rng);
-
-            if target.is_none() {
-                self_destruct();
-            }
-
-            wait_ticks(1);
+        if messages.len() > 0 {
+            let pos = crate::radio::unpack_message(messages[0]);
+            todo!("Turn to target: {:?}", pos);
         }
     }
 }

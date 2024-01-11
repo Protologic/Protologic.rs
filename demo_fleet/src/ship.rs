@@ -4,6 +4,7 @@ use protologic_core::constants;
 use protologic_core::highlevel::queries::*;
 use protologic_core::highlevel::actions::*;
 use protologic_core::lowlevel::queries::RadarGetContactInfo;
+use protologic_core::radio_transmit;
 use protologic_core::utils::*;
 use protologic_core::wasi::sched_yield;
 
@@ -12,21 +13,22 @@ use crate::turn_and_stop;
 pub fn run()
 {
     // Setup some state
-    let scan_angle: f32 = 10.0;
+    let scan_angle: f32 = 45.0;
     let mut scan_elevation: f32 = 0.0;
     let mut contacts: Vec<RadarGetContactInfo> = Vec::new();
     let mut handles: Vec<DebugShapeHandle> = Vec::new();
+    let mut sent_message = false;
 
     // Turn upwards
-    turn_and_stop(1.0, 0.0, 0.0, 900);
+    turn_and_stop(1.0, 0.0, 0.0, 1100);
 
     // Burn
     engine_set_throttle(1.0);
-    wait_ticks(550);
+    wait_ticks(650);
     engine_set_throttle(0.0);
 
     // Turn along long axis
-    turn_and_stop(0.0, 0.0, -1.0, 1900);
+    turn_and_stop(0.0, 0.0, -1.0, 1850);
 
     // Launch some missiles
     for i in 0 .. constants::ship_missile_launcher_count()
@@ -78,6 +80,12 @@ pub fn run()
                 dist = ((pos.0 - tgt.x).powf(2.0) + (pos.1 - tgt.y).powf(2.0) + (pos.2 - tgt.z).powf(2.0)).sqrt();
                 println!("Target detected: {:?} @ d:{} b:{}", tgt.get_target_type(), dist, scan_elevation);
                 scan_elevation -= scan_angle * 4.0;
+
+                // Send a message over the radio with the location
+                if !sent_message {
+                    radio_transmit(crate::radio::pack_message(pos), 999999f32);
+                    sent_message = true;
+                }
 
                 // Draw a line to the target
                 handles.clear();
