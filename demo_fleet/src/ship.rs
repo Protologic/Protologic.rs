@@ -6,7 +6,6 @@ use protologic_core::highlevel::actions::*;
 use protologic_core::lowlevel::queries::RadarGetContactInfo;
 use protologic_core::radio_transmit;
 use protologic_core::utils::*;
-use protologic_core::wasi::sched_yield;
 
 use crate::turn_and_stop;
 
@@ -17,10 +16,14 @@ pub fn run()
     let mut scan_elevation: f32 = 0.0;
     let mut contacts: Vec<RadarGetContactInfo> = Vec::new();
     let mut handles: Vec<DebugShapeHandle> = Vec::new();
-    let mut sent_message = false;
+
+    // Reconfigure launch cells (high thrust nuclear tipped missiles)
+    for i in 0 .. constants::ship_missile_launcher_count() {
+        actions::missilelauncher_configure(i, protologic_core::MissileEngineType::HighThrust, protologic_core::MissileWarheadType::Nuclear);
+    }
 
     // Turn upwards
-    turn_and_stop(1.0, 0.0, 0.0, 1100);
+    turn_and_stop(1.0, 0.0, 0.0, 900);
 
     // Burn
     engine_set_throttle(1.0);
@@ -30,14 +33,8 @@ pub fn run()
     // Turn along long axis
     turn_and_stop(0.0, 0.0, -1.0, 1850);
 
-    // Launch some missiles
-    for i in 0 .. constants::ship_missile_launcher_count()
-    {
-        // Reload to high thrust nuclear tipped missiles
-        actions::missilelauncher_configure(i, protologic_core::MissileEngineType::HighThrust, protologic_core::MissileWarheadType::Nuclear);
-        while missilelauncher_get_reloadtime(i) > 0f32 {
-            sched_yield();
-        }
+    // Launch one missile from each launch cell
+    for i in 0 .. constants::ship_missile_launcher_count() {
         actions::missilelauncher_trigger(i);
         wait_ticks(50);
     }
@@ -82,10 +79,7 @@ pub fn run()
                 scan_elevation -= scan_angle * 4.0;
 
                 // Send a message over the radio with the location
-                if !sent_message {
-                    radio_transmit(crate::radio::pack_message(pos), 999999f32);
-                    sent_message = true;
-                }
+                radio_transmit(crate::radio::pack_message(pos), 999999f32);
 
                 // Draw a line to the target
                 handles.clear();
@@ -114,7 +108,6 @@ pub fn run()
             gun_trigger(2);
             wait_ticks(255);
             gun_trigger(3);
-            println!("Fire!");
             wait_ticks(255);
         }
     }

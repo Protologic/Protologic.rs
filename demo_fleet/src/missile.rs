@@ -17,7 +17,7 @@ pub fn run()
 
     // Pulse the engines a bit to clear the ship
     engine_set_throttle(1.0);
-    wait_time(Duration::from_secs_f32(0.1f32));
+    wait_time(Duration::from_secs_f32(0.25f32));
     engine_set_throttle(0.0);
 
     // Turn in a random direction for a random amount of time
@@ -31,18 +31,25 @@ pub fn run()
 
     // Pulse the engines to separate from other missiles
     engine_set_throttle(1.0);
-    wait_time(Duration::from_secs_f32(0.1f32));
+    wait_time(Duration::from_secs_f32(0.25f32));
     engine_set_throttle(0.0);
 
-    // Wait for a radio message
+    // Wait for a radio message with the position to attack
     let mut messages = Vec::new();
     loop {
-        radio_receive(&mut messages);
         sched_yield();
-
-        if messages.len() > 0 {
-            let pos = crate::radio::unpack_message(messages[0]);
-            todo!("Turn to target: {:?}", pos);
+        radio_receive(&mut messages);
+        if messages.len() == 0 {
+            continue;
         }
+    
+        let pos = crate::radio::unpack_message(messages[0]);
+        attack(pos);
     }
+}
+
+fn attack(target: (f32, f32, f32))
+{
+    wait_time(Duration::from_secs(5));
+    todo!("Turn to target: {:?}", target);
 }
