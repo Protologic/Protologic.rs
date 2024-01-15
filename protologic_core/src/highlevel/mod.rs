@@ -1,6 +1,5 @@
 pub mod actions;
 pub mod queries;
-pub mod wasi;
 pub mod constants;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

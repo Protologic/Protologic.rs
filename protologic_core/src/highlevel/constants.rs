@@ -26,13 +26,13 @@ macro_rules! define_protologic_const
                 }
             }
 
-            #[cfg(not(test))]
+            #[cfg(not(feature="mock_protologic"))]
             #[link(wasm_import_module = "protologic")]
             extern { fn $wasm_name() -> $t; }
         }
 
         #[allow(unused)]
-        #[cfg(feature = "mock_protologic")]
+        #[cfg(feature="mock_protologic")]
         mod $rust_name
         {
             pub fn $rust_name() -> $t

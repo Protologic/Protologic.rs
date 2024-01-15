@@ -4,8 +4,8 @@ use protologic_core::constants;
 use protologic_core::highlevel::queries::*;
 use protologic_core::highlevel::actions::*;
 use protologic_core::lowlevel::queries::RadarGetContactInfo;
-use protologic_core::radio_transmit;
-use protologic_core::utils::*;
+use protologic_core::radio::*;
+use protologic_core::wait::*;
 
 use crate::turn_and_stop;
 

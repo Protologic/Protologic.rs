@@ -3,9 +3,8 @@ use std::time::Duration;
 use rand::{prelude::*, distributions::Uniform};
 use protologic_core::{
     highlevel::actions::*,
-    utils::*,
+    wait::*,
     radio::*,
-    wasi::sched_yield,
 };
 
 use crate::turn_and_stop;
@@ -37,7 +36,7 @@ pub fn run()
     // Wait for a radio message with the position to attack
     let mut messages = Vec::new();
     loop {
-        sched_yield();
+        wait_tick();
         radio_receive(&mut messages);
         if messages.len() == 0 {
             continue;

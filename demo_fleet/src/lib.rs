@@ -10,7 +10,7 @@ mod radio;
 
 use protologic_core::{
     highlevel::actions::*,
-    utils::*,
+    wait::*,
     queries::*,
     constants::*,
 };

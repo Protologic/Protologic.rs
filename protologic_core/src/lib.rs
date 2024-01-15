@@ -18,14 +18,13 @@ macro_rules! protologic_define_extern
             $vis unsafe fn $name ( $( $arg_name : $arg_ty ),* ) $( -> $ret_ty )? { panic!("extern called in test mode!") }
         }
 
-        pub use self::$name::$name;
+        $vis use self::$name::$name;
     }
 }
 
 pub mod lowlevel;
 pub mod highlevel;
-pub mod utils;
 pub mod radio;
+pub mod wait;
 
 pub use highlevel::*;
-pub use radio::*;

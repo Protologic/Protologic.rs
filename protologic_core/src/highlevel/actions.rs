@@ -18,6 +18,16 @@ pub fn wheel_set_torque(x: f32, y: f32, z: f32)
     }
 }
 
+/// Turn the ship running light on/off
+pub fn runninglight_set_state(on: bool)
+{
+    unsafe
+    {
+        lowlevel::actions::runninglight_set_state(if on { 1 } else { 0 });
+    }
+}
+
+/// Set the rocket engine throttle
 pub fn engine_set_throttle(throttle: f32)
 {
     unsafe
@@ -26,6 +36,7 @@ pub fn engine_set_throttle(throttle: f32)
     }
 }
 
+/// Configure the radar direction and angle, and optionally trigger it
 pub fn radar_configure(angle: f32, bearing: f32, elevation: f32, trigger: bool)
 {
     radar_set_angle(angle);

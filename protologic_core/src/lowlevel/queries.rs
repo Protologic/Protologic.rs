@@ -2,7 +2,7 @@ use std::{alloc::Layout, sync::OnceLock};
 
 static GENERAL_QUICK_STATE: OnceLock<QuickStateBox> = OnceLock::new();
 
-pub fn get_general_quickstate() -> &'static QuickStateBox
+pub(crate) fn get_general_quickstate() -> &'static QuickStateBox
 {
     const SIZE : usize = 1024usize;
     return GENERAL_QUICK_STATE.get_or_init(||
@@ -16,7 +16,12 @@ pub fn get_general_quickstate() -> &'static QuickStateBox
     });
 }
 
-pub struct QuickStateBox
+pub(crate) unsafe fn get_quickstate_buffer_pointer() -> *mut u8
+{
+    return get_general_quickstate().ptr;
+}
+
+pub(crate) struct QuickStateBox
 {
     pub ptr: *mut u8,
 }
@@ -107,7 +112,7 @@ impl RadarGetContactInfo
 }
 
 #[repr(C)]
-pub struct QuickState
+pub(crate) struct QuickState
 {
     pub pos_x: f32,
     pub pos_y: f32,
