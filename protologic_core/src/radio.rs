@@ -1,20 +1,15 @@
-use std::{sync::OnceLock, alloc::Layout};
-
-use crate::lowlevel::queries::QuickStateBox;
-
 /// Get all radio messages received in the last tick.
 pub fn radio_receive(output: &mut Vec<u64>)
 {
-    // Get number of messages (first 4 bytes in the buffer)
-    let pre_count = get_radio_quickstate().read_i32(0);
-
-    // Reserve sufficient space
+    // Reserve some space
     output.clear();
-    output.reserve(pre_count as usize);
+    output.reserve(8);
 
-    // Read all messages one by one (with 8 byte offset to the start of the first message)
-    for i in 0..pre_count {
-        output.push(get_radio_quickstate().read_u64((8 + 8 * i) as usize));
+    unsafe
+    {
+        let start = output.as_mut_ptr();
+        let count = radio_rx(start, (output.capacity() as i32) * 8);
+        output.set_len(count as usize);
     }
 }
 
@@ -49,26 +44,6 @@ pub fn radio_unpack(value: u64) -> [u8;8]
     return u64::to_be_bytes(value);
 }
 
-static RADIO_QUICK_STATE: OnceLock<QuickStateBox> = OnceLock::new();
-fn get_radio_quickstate() -> &'static QuickStateBox
-{
-    const SIZE : usize = 1024usize;
-    return RADIO_QUICK_STATE.get_or_init(||
-    {
-        // Allocate a large buffer and tell the engine about it
-        let layout = Layout::new::<[u8; SIZE]>();
-        let buffer = unsafe { std::alloc::alloc_zeroed(layout) };
-        unsafe { set_radio_rx_buffer(buffer, SIZE as i32) };
-
-        return QuickStateBox { ptr: buffer };
-    });
-}
-
-pub(crate) unsafe fn get_radio_buffer_pointer() -> *mut u8
-{
-    return get_radio_quickstate().ptr;
-}
-
-protologic_define_extern!(pub fn set_radio_rx_buffer(addr: *mut u8, len: i32));
 protologic_define_extern!(pub fn radio_tx(message: u64, range: f32));
+protologic_define_extern!(pub fn radio_rx(addr: *mut u64, bytes: i32) -> i32);
 protologic_define_extern!(pub fn radio_rx_filter(filter: u64, mask: u64));

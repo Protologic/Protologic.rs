@@ -52,12 +52,22 @@ define_protologic_const!(const_get_fueldensity, fuel_density, f32, "Mass of a si
 define_protologic_const!(const_get_spaceshipthrust, ship_engine_thrust, f32, "Thrust produced by the ship engines at maximum throttle.");
 define_protologic_const!(const_get_spaceshipfuelconsumption, ship_engine_fuel_consumption, f32, "Amount of fuel (liter/second) consumed by the ship engines at maximum throttle.");
 define_protologic_const!(const_get_spaceshipfuelcapacity, ship_engine_fuel_capacity, f32, "Amount of fuel (liters) stored in the ship fuel tanks.");
-define_protologic_const!(const_get_shipbasemass, ship_mass, f32, "Total mass of the ship (kilograms) **not** including fuel.");
-define_protologic_const!(const_get_shipwheeltorque, ship_wheel_torque, f32, "Torque produced by the ship momentum wheels at maximum.");
-define_protologic_const!(const_get_shipradius, ship_radius, f32, "Radius (meters) of the ship. The ship collision geometry is a perfect sphere.");
 
-define_protologic_const!(const_get_shippertickcpufuel, ship_cpu_fuel_per_tick, i64, "Total amount of CPU instructions the CPU can execute every tick. If this amount is exceeded within a single tick future ticks will be skipped to compensate.");
-define_protologic_const!(const_get_wasmmemorylimit, ship_cpu_memory_max, i64, "Total memory (bytes) the CPU may consume.");
+define_protologic_const!(const_get_shipbasemass, ship_mass, f32, "Total mass of the ship (kilograms) **not** including fuel.");
+define_protologic_const!(const_get_missilebasemass, missile_mass, f32, "Total mass of a missile (kilograms) **not** including fuel.");
+
+define_protologic_const!(const_get_shipwheeltorque, ship_wheel_torque, f32, "Torque produced by the ship momentum wheels at maximum.");
+define_protologic_const!(const_get_missilewheeltorque, missile_wheel_torque, i32, "Torque produced by the missile momentum wheels at maximum.");
+
+define_protologic_const!(const_get_shipradius, ship_radius, f32, "Radius (meters) of the ship. The ship collision geometry is a perfect sphere.");
+define_protologic_const!(const_get_missileradius, missile_radius, f32, "Radius (meters) of a missile. The missile collision geometry is a perfect sphere.");
+define_protologic_const!(const_get_shellradius, shell_radius, f32, "Radius (meters) of a shell. The shell collision geometry is a perfect sphere.");
+
+define_protologic_const!(const_get_shippertickcpufuel, ship_cpu_fuel_per_tick, i64, "Total amount of CPU instructions the ship CPU can execute every tick. If this amount is exceeded within a single tick future ticks will be skipped to compensate.");
+define_protologic_const!(const_get_missilepertickcpufuel, missile_cpu_fuel_per_tick, i64, "Total amount of CPU instructions the missile CPU can execute every tick. If this amount is exceeded within a single tick future ticks will be skipped to compensate.");
+
+define_protologic_const!(const_get_wasmmemorylimit, ship_cpu_memory_max, i64, "Total memory (bytes) the ship CPU may consume.");
+define_protologic_const!(const_get_wasmmemorylimit, missile_cpu_memory_max, i64, "Total memory (bytes) the missile CPU may consume.");
 
 define_protologic_const!(const_get_turretminelevation, turret_elevation_min, f32, "Minimum elevation of the gun turrets (degrees).");
 define_protologic_const!(const_get_turretmaxelevation, turret_elevation_max, f32, "Maximum elevation of the gun turrets (degrees).");

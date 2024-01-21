@@ -65,7 +65,7 @@ pub fn run()
         wait_ticks(1);
 
         // Check if we detected anything
-        let pos = ship_get_position();
+        let pos = vehicle_get_position();
         let mut detected = false;
         let mut dist = 0f32;
         radar_get_contacts(&mut contacts);

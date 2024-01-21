@@ -49,13 +49,13 @@ fn stop_turning()
     let torque = ship_wheel_torque();
     loop
     {
-        let angular_vel = ship_get_angular_velocity();
+        let angular_vel = vehicle_get_angular_velocity();
         if f32::abs(angular_vel.0) < 0.001 && f32::abs(angular_vel.1) < 0.001 && f32::abs(angular_vel.2) < 0.001 {
             break;
         }
 
         // Calculate necessary torque setting to stop in the next tick, this will be clamped to [-1, 1] by the game
-        let mass = ship_get_mass();
+        let mass = vehicle_get_mass();
         let x = (angular_vel.0 * mass / torque) / tick_duration();
         let y = (angular_vel.1 * mass / torque) / tick_duration();
         let z = (angular_vel.2 * mass / torque) / tick_duration();

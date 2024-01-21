@@ -22,6 +22,14 @@ macro_rules! protologic_define_extern
     }
 }
 
+pub(crate) struct DangerBox<T>
+{
+    pub value: T,
+}
+
+unsafe impl<T> Sync for DangerBox<T> { }
+unsafe impl<T> Send for DangerBox<T> { }
+
 pub mod lowlevel;
 pub mod highlevel;
 pub mod radio;

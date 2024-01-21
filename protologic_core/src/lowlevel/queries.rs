@@ -1,25 +1,44 @@
 use std::{alloc::Layout, sync::OnceLock};
 
+use crate::DangerBox;
+
+const SIZE : usize = 1024usize;
 static GENERAL_QUICK_STATE: OnceLock<QuickStateBox> = OnceLock::new();
+static mut GENERAL_QUICK_STATE_DIRTY: DangerBox<bool> = DangerBox { value: true };
 
 pub(crate) fn get_general_quickstate() -> &'static QuickStateBox
 {
-    const SIZE : usize = 1024usize;
-    return GENERAL_QUICK_STATE.get_or_init(||
+    // Get a chunk of memory (initialised on first access) to use for quickstate
+    let qs = GENERAL_QUICK_STATE.get_or_init(||
     {
         // Allocate a large buffer and tell the engine about it
         let layout = Layout::new::<[u8; SIZE]>();
         let buffer = unsafe { std::alloc::alloc_zeroed(layout) };
-        unsafe { sharedmemory_set_readaddress(buffer, SIZE as i32) };
+        unsafe { read_quickstate(buffer, SIZE as i32) };
 
         return QuickStateBox { ptr: buffer };
     });
+
+    // If the buffer has been marked as dirty, read it now and mark it as clean
+    unsafe
+    {
+        if GENERAL_QUICK_STATE_DIRTY.value
+        {
+            crate::lowlevel::queries::read_quickstate(qs.ptr, SIZE as i32);
+            GENERAL_QUICK_STATE_DIRTY.value = false;
+            core::sync::atomic::compiler_fence(std::sync::atomic::Ordering::SeqCst);
+        }
+    }
+
+    return qs;
 }
 
-pub(crate) unsafe fn get_quickstate_buffer_pointer() -> *mut u8
+pub(crate) unsafe fn quickstate_invalidate_cache()
 {
-    return get_general_quickstate().ptr;
+    GENERAL_QUICK_STATE_DIRTY.value = true;
 }
+
+protologic_define_extern!(pub(crate) fn read_quickstate(addr: *mut u8, bytes: i32));
 
 pub(crate) struct QuickStateBox
 {
@@ -87,7 +106,6 @@ impl QuickStateBox
     }
 }
 
-protologic_define_extern!(pub fn sharedmemory_set_readaddress(addr: *mut u8, len: i32));
 protologic_define_extern!(pub fn cpu_get_fuel() -> i64);
 protologic_define_extern!(pub fn radar_get_contact_list(ptr: *mut super::RadarGetContactInfo, len: i32) -> i32);
 
