@@ -62,10 +62,17 @@ pub fn radar_get_contact_count() -> i32
 /// Get all info about all radar targets
 pub fn radar_get_contacts(output: &mut Vec<RadarGetContactInfo>)
 {
+    // Presize the list to at least as many contacts as we're about to receive
     let pre_count = radar_get_contact_count();
     output.clear();
     output.reserve(pre_count as usize);
 
+    // Do nothing if there are no contacts
+    if pre_count == 0 {
+        return;
+    }
+
+    // Read the contact data
     unsafe
     {
         let start = output.as_mut_ptr();

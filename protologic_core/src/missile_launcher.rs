@@ -11,12 +11,18 @@ pub fn missilelauncher_trigger(index: i32)
     }
 }
 
-pub fn missilelauncher_configure(index: i32, engine: MissileEngineType, warhead: MissileWarheadType)
+/// Configure a missile launcher cell
+/// - index: cell to configure
+/// - engine: engine type to install on the missile
+/// - warhead: warhead type to install on the missile
+/// - fuel_load: How much to fill the fuel tanks (0 to 1)
+pub fn missilelauncher_configure(index: i32, engine: MissileEngineType, warhead: MissileWarheadType, fuel_load: f32)
 {
     unsafe
     {
         lowlevel::actions::missilelauncher_set_enginetype(index, engine.into());
         lowlevel::actions::missilelauncher_set_warheadtype(index, warhead.into());
+        lowlevel::actions::missilelauncher_set_fuelload(index, fuel_load);
     }
 }
 

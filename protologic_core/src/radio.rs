@@ -1,14 +1,24 @@
+use crate::lowlevel::quickstate::get_general_quickstate;
+
 /// Get all radio messages received in the last tick.
 pub fn radio_receive(output: &mut Vec<u64>)
 {
     // Reserve some space
+    let inbox_count = get_general_quickstate().read_i32(672);
     output.clear();
-    output.reserve(8);
+    output.reserve(inbox_count as usize);
 
+    // Do nothing if there are no pending messages
+    if inbox_count == 0 {
+        return;
+    }
+
+    // Read messages into buffer
     unsafe
     {
         let start = output.as_mut_ptr();
         let count = radio_rx(start, (output.capacity() as i32) * 8);
+        assert_eq!(inbox_count, count);
         output.set_len(count as usize);
     }
 }

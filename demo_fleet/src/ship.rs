@@ -20,7 +20,7 @@ pub fn run()
 
     // Reconfigure launch cells (high thrust nuclear tipped missiles)
     for i in 0 .. constants::ship_missile_launcher_count() {
-        missilelauncher_configure(i, MissileEngineType::HighThrust, MissileWarheadType::Nuclear);
+        missilelauncher_configure(i, MissileEngineType::HighThrust, MissileWarheadType::Nuclear, 1.0);
     }
 
     // Turn upwards
@@ -49,6 +49,13 @@ pub fn run()
 
     loop
     {
+        // Log the position of the ship every tick. If running in debug mode
+        // this data will be saved into "position.csv", next to the replay file.
+        let pos = vehicle_get_position();
+        debug_log_data("position", "x", pos.0);
+        debug_log_data("position", "y", pos.1);
+        debug_log_data("position", "z", pos.2);
+
         // sweep radar
         scan_elevation = (scan_elevation + 0.5f32) % 90f32;
         radar_set_angle(scan_angle);
