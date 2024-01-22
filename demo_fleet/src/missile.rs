@@ -2,9 +2,9 @@ use std::time::Duration;
 
 use rand::{prelude::*, distributions::Uniform};
 use protologic_core::{
-    highlevel::actions::*,
     wait::*,
     radio::*,
+    maneuvering::*,
 };
 
 use crate::turn_and_stop;

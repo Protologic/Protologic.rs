@@ -18,21 +18,21 @@ macro_rules! protologic_define_extern
             $vis unsafe fn $name ( $( $arg_name : $arg_ty ),* ) $( -> $ret_ty )? { panic!("extern called in test mode!") }
         }
 
+        #[allow(unused_imports)]
         $vis use self::$name::$name;
     }
 }
 
-pub(crate) struct DangerBox<T>
-{
-    pub value: T,
-}
+mod lowlevel;
 
-unsafe impl<T> Sync for DangerBox<T> { }
-unsafe impl<T> Send for DangerBox<T> { }
-
-pub mod lowlevel;
-pub mod highlevel;
+pub mod constants;
 pub mod radio;
 pub mod wait;
-
-pub use highlevel::*;
+pub mod radar;
+pub mod cpu;
+pub mod guns;
+pub mod debugging;
+pub mod missile_launcher;
+pub mod maneuvering;
+pub mod physics;
+pub mod misc;

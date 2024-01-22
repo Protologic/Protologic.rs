@@ -8,7 +8,7 @@ macro_rules! define_protologic_const
     {
         #[cfg(not(feature="mock_protologic"))]
         mod $rust_name {
-            use crate::constants::paste::paste;
+            use constants::paste::paste;
 
             paste! {
                 static mut [<CACHE_ $rust_name>]: Option<$t> = None;

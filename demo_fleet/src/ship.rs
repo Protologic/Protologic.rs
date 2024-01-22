@@ -1,11 +1,12 @@
-use protologic_core::RadarTargetType;
-use protologic_core::actions;
 use protologic_core::constants;
-use protologic_core::highlevel::queries::*;
-use protologic_core::highlevel::actions::*;
-use protologic_core::lowlevel::queries::RadarGetContactInfo;
+use protologic_core::debugging::*;
+use protologic_core::maneuvering::*;
+use protologic_core::missile_launcher::*;
+use protologic_core::physics::*;
+use protologic_core::radar::*;
 use protologic_core::radio::*;
 use protologic_core::wait::*;
+use protologic_core::guns::*;
 
 use crate::turn_and_stop;
 
@@ -19,7 +20,7 @@ pub fn run()
 
     // Reconfigure launch cells (high thrust nuclear tipped missiles)
     for i in 0 .. constants::ship_missile_launcher_count() {
-        actions::missilelauncher_configure(i, protologic_core::MissileEngineType::HighThrust, protologic_core::MissileWarheadType::Nuclear);
+        missilelauncher_configure(i, MissileEngineType::HighThrust, MissileWarheadType::Nuclear);
     }
 
     // Turn upwards
@@ -35,7 +36,7 @@ pub fn run()
 
     // Launch one missile from each launch cell
     for i in 0 .. constants::ship_missile_launcher_count() {
-        actions::missilelauncher_trigger(i);
+        missilelauncher_trigger(i);
         wait_ticks(50);
     }
     

@@ -1,6 +1,6 @@
 use std::{alloc::Layout, sync::OnceLock};
 
-use crate::DangerBox;
+use lowlevel::DangerBox;
 
 const SIZE : usize = 1024usize;
 static GENERAL_QUICK_STATE: OnceLock<QuickStateBox> = OnceLock::new();
@@ -24,7 +24,7 @@ pub(crate) fn get_general_quickstate() -> &'static QuickStateBox
     {
         if GENERAL_QUICK_STATE_DIRTY.value
         {
-            crate::lowlevel::queries::read_quickstate(qs.ptr, SIZE as i32);
+            crate::lowlevel::quickstate::read_quickstate(qs.ptr, SIZE as i32);
             GENERAL_QUICK_STATE_DIRTY.value = false;
             core::sync::atomic::compiler_fence(std::sync::atomic::Ordering::SeqCst);
         }
@@ -97,6 +97,7 @@ impl QuickStateBox
         }
     }
 
+    #[allow(dead_code)]
     pub fn read_u64(&self, addr: usize) -> u64
     {
         unsafe
@@ -107,27 +108,7 @@ impl QuickStateBox
 }
 
 protologic_define_extern!(pub fn cpu_get_fuel() -> i64);
-protologic_define_extern!(pub fn radar_get_contact_list(ptr: *mut super::RadarGetContactInfo, len: i32) -> i32);
-
-#[derive(Debug, Clone, PartialEq)]
-#[repr(C)]
-pub struct RadarGetContactInfo
-{
-    pub id: i64,
-    target_type: i32,
-    pub signal_strength: f32,
-    pub x: f32,
-    pub y: f32,
-    pub z: f32,
-}
-
-impl RadarGetContactInfo
-{
-    pub fn get_target_type(&self) -> crate::RadarTargetType
-    {
-        return self.target_type.into();
-    }
-}
+protologic_define_extern!(pub fn radar_get_contact_list(ptr: *mut crate::radar::RadarGetContactInfo, len: i32) -> i32);
 
 #[repr(C)]
 pub(crate) struct QuickState
