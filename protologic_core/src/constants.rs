@@ -57,7 +57,7 @@ define_protologic_const!(const_get_shipbasemass, ship_mass, f32, "Total mass of 
 define_protologic_const!(const_get_missilebasemass, missile_mass, f32, "Total mass of a missile (kilograms) **not** including fuel.");
 
 define_protologic_const!(const_get_shipwheeltorque, ship_wheel_torque, f32, "Torque produced by the ship momentum wheels at maximum.");
-define_protologic_const!(const_get_missilewheeltorque, missile_wheel_torque, i32, "Torque produced by the missile momentum wheels at maximum.");
+define_protologic_const!(const_get_missilewheeltorque, missile_wheel_torque, f32, "Torque produced by the missile momentum wheels at maximum.");
 
 define_protologic_const!(const_get_shipradius, ship_radius, f32, "Radius (meters) of the ship. The ship collision geometry is a perfect sphere.");
 define_protologic_const!(const_get_missileradius, missile_radius, f32, "Radius (meters) of a missile. The missile collision geometry is a perfect sphere.");

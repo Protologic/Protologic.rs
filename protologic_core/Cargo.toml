@@ -1,6 +1,6 @@
 [package]
 name = "protologic_core"
-version = "8.1.0"
+version = "8.1.1"
 description = "Rust bindings for Protologic"
 homepage = "https://github.com/Protologic"
 repository = "https://github.com/Protologic/Protologic.rs"
