@@ -67,6 +67,7 @@ impl Into<i32> for MissileEngineType
 pub enum MissileWarheadType
 {
     Nuclear,
+    Inert,
 }
 
 impl Into<i32> for MissileWarheadType
@@ -76,6 +77,7 @@ impl Into<i32> for MissileWarheadType
         return match self
         {
             MissileWarheadType::Nuclear => 0,
+            MissileWarheadType::Inert => 1,
         };
     }
 }

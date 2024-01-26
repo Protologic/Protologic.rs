@@ -7,7 +7,7 @@ use protologic_core::{
     maneuvering::*,
 };
 
-use crate::turn_and_stop;
+use crate::manoeuvre::*;
 
 pub fn run()
 {

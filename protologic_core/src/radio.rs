@@ -54,6 +54,6 @@ pub fn radio_unpack(value: u64) -> [u8;8]
     return u64::to_be_bytes(value);
 }
 
-protologic_define_extern!(pub fn radio_tx(message: u64, range: f32));
-protologic_define_extern!(pub fn radio_rx(addr: *mut u64, bytes: i32) -> i32);
-protologic_define_extern!(pub fn radio_rx_filter(filter: u64, mask: u64));
+protologic_define_extern!(pub(crate) fn radio_tx(message: u64, range: f32));
+protologic_define_extern!(pub(crate) fn radio_rx(addr: *mut u64, bytes: i32) -> i32);
+protologic_define_extern!(pub(crate) fn radio_rx_filter(filter: u64, mask: u64));

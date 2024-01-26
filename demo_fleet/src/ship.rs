@@ -8,7 +8,7 @@ use protologic_core::radio::*;
 use protologic_core::wait::*;
 use protologic_core::guns::*;
 
-use crate::turn_and_stop;
+use crate::manoeuvre::*;
 
 pub fn run()
 {
