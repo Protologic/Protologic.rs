@@ -23,6 +23,10 @@ macro_rules! protologic_define_extern
     }
 }
 
+#[macro_use]
+extern crate num_derive;
+extern crate num_traits;
+
 mod lowlevel;
 
 pub mod constants;

@@ -1,6 +1,6 @@
 use crate::lowlevel::{quickstate::{
     get_general_quickstate,
-    radar_get_contact_list
+    radar_get_contact_list2
 }, self};
 
 /// Configure the radar direction and angle, and optionally trigger it
@@ -76,7 +76,7 @@ pub fn radar_get_contacts(output: &mut Vec<RadarGetContactInfo>)
     unsafe
     {
         let start = output.as_mut_ptr();
-        let count = radar_get_contact_list(start, pre_count);
+        let count = radar_get_contact_list2(start, pre_count, std::mem::size_of::<RadarGetContactInfo>() as i32);
         assert!(count <= pre_count);
         output.set_len(count as usize);
     }
@@ -93,55 +93,27 @@ pub fn radar_get_noise() -> f32
 pub struct RadarGetContactInfo
 {
     pub id: i64,
-    target_type: i32,
+    pub target_type: RadarTargetType,
     pub signal_strength: f32,
     pub x: f32,
     pub y: f32,
     pub z: f32,
 }
 
-impl RadarGetContactInfo
-{
-    pub fn get_target_type(&self) -> RadarTargetType
-    {
-        return self.target_type.into();
-    }
-}
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, ToPrimitive, FromPrimitive)]
+#[repr(i32)]
 pub enum RadarTargetType
 {
     /// This contact is invalid, most likely indicates a bug in the game if you have received this value.
-    Invalid,
+    Invalid = -1,
 
-    SpaceBattleShip,
-    SpaceHulk,
-    Missile,
-    //NuclearShell,
-    //Explosion
-    Asteroid,
-    //VictoryMarker
-    FlakShell,
-    APShell,
-}
-
-impl From<i32> for RadarTargetType
-{
-    fn from(item: i32) -> Self
-    {
-        return match item
-        {
-            0 => RadarTargetType::SpaceBattleShip,
-            1 => RadarTargetType::SpaceHulk,
-            2 => RadarTargetType::Missile,
-            //3 => RadarTargetType::NuclearShell,
-            //4 => RadarTargetType::Explosion,
-            5 => RadarTargetType::Asteroid,
-            //6 => RadarTargetType::VictoryMarker,
-            7 => RadarTargetType::FlakShell,
-            8 => RadarTargetType::APShell,
-
-            _ => RadarTargetType::Invalid,
-        };
-    }
+    SpaceBattleShip = 0,
+    SpaceHulk = 1,
+    Missile = 2,
+    //NuclearShell = 3,
+    //Explosion = 4
+    Asteroid = 5,
+    //VictoryMarker = 6
+    FlakShell = 7,
+    APShell = 8,
 }

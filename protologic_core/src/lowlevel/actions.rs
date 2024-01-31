@@ -40,3 +40,6 @@ protologic_define_extern!(pub(crate) fn missilelauncher_trigger(index: i32));
 protologic_define_extern!(pub(crate) fn missilelauncher_set_enginetype(index: i32, engine_type: i32));
 protologic_define_extern!(pub(crate) fn missilelauncher_set_warheadtype(index: i32, warhead_type: i32));
 protologic_define_extern!(pub(crate) fn missilelauncher_set_fuelload(index: i32, fuel_load: f32));
+protologic_define_extern!(pub(crate) fn missilelauncher_get_enginetype(index: i32) -> i32);
+protologic_define_extern!(pub(crate) fn missilelauncher_get_warheadtype(index: i32) -> i32);
+protologic_define_extern!(pub(crate) fn missilelauncher_get_fuelload(index: i32) -> f32);

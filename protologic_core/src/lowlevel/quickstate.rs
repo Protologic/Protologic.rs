@@ -108,7 +108,7 @@ impl QuickStateBox
 }
 
 protologic_define_extern!(pub fn cpu_get_fuel() -> i64);
-protologic_define_extern!(pub fn radar_get_contact_list(ptr: *mut crate::radar::RadarGetContactInfo, len: i32) -> i32);
+protologic_define_extern!(pub fn radar_get_contact_list2(ptr: *mut crate::radar::RadarGetContactInfo, count: i32, itemSize: i32) -> i32);
 
 #[repr(C)]
 pub(crate) struct QuickState

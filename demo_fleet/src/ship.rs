@@ -79,11 +79,11 @@ pub fn run()
         radar_get_contacts(&mut contacts);
         for tgt in contacts.iter()
         {
-            if tgt.get_target_type() == RadarTargetType::SpaceBattleShip
+            if tgt.target_type == RadarTargetType::SpaceBattleShip
             {
                 detected = true;
                 dist = ((pos.0 - tgt.x).powf(2.0) + (pos.1 - tgt.y).powf(2.0) + (pos.2 - tgt.z).powf(2.0)).sqrt();
-                println!("Target detected: {:?} @ d:{} b:{}", tgt.get_target_type(), dist, scan_elevation);
+                println!("Target detected: {:?} @ d:{} b:{}", tgt.target_type, dist, scan_elevation);
                 scan_elevation -= scan_angle * 4.0;
 
                 // Send a message over the radio with the location

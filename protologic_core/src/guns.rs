@@ -1,3 +1,5 @@
+use num_traits::FromPrimitive;
+
 use crate::lowlevel::{
     actions::*,
     quickstate::get_general_quickstate
@@ -82,10 +84,10 @@ pub fn gun_reload(index: i32, ammo: AmmoType)
     {
         match index
         {
-            0 => gun0_reload(ammo.into()),
-            1 => gun1_reload(ammo.into()),
-            2 => gun2_reload(ammo.into()),
-            3 => gun3_reload(ammo.into()),
+            0 => gun0_reload(ammo as i32),
+            1 => gun1_reload(ammo as i32),
+            2 => gun2_reload(ammo as i32),
+            3 => gun3_reload(ammo as i32),
             _ => panic!("Unknown gun index: {}", index),
         }
     }
@@ -148,7 +150,7 @@ pub fn gun_get_magazine_type(index: i32) -> AmmoType
         panic!("Unknown gun index: {}", index)
     }
 
-    return get_general_quickstate().read_u16((520 + index * 2) as usize).into();
+    return AmmoType::from_u16(get_general_quickstate().read_u16((520 + index * 2) as usize)).expect("Unknown AmmoType");
 }
 
 /// Get the amount of time remaining before the current reload is completed for the gun turret with the given index
@@ -161,50 +163,10 @@ pub fn gun_get_magazine_reloadtime(index: i32) -> f32
     return get_general_quickstate().read_f32((336 + index * 4) as usize);
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, ToPrimitive, FromPrimitive)]
+#[repr(i32)]
 pub enum AmmoType
 {
-    Flak,
-    ArmourPiercing,
-
-    Unknown
-}
-
-impl From<i32> for AmmoType
-{
-    fn from(item: i32) -> Self
-    {
-        return match item
-        {
-            0 => AmmoType::Flak,
-            1 => AmmoType::ArmourPiercing,
-            _ => AmmoType::Unknown,
-        };
-    }
-}
-
-impl From<u16> for AmmoType
-{
-    fn from(item: u16) -> Self
-    {
-        return match item
-        {
-            0 => AmmoType::Flak,
-            1 => AmmoType::ArmourPiercing,
-            _ => AmmoType::Unknown,
-        };
-    }
-}
-
-impl Into<i32> for AmmoType
-{
-    fn into(self) -> i32
-    {
-        return match self
-        {
-            AmmoType::Flak => 0,
-            AmmoType::ArmourPiercing => 1,
-            AmmoType::Unknown => i32::MAX
-        };
-    }
+    Flak = 0,
+    ArmourPiercing = 1,
 }
