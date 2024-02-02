@@ -1,7 +1,0 @@
-[workspace]
-resolver = "2"
-
-members = [
-    "protologic_core",
-    "demo_fleet"
-]
