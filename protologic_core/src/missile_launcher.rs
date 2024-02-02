@@ -75,6 +75,7 @@ pub fn missilelauncher_get_reloadtime(index: i32) -> f32
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, FromPrimitive, ToPrimitive)]
+#[repr(i32)]
 pub enum MissileEngineType
 {
     LowThrust,
@@ -83,6 +84,7 @@ pub enum MissileEngineType
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, FromPrimitive, ToPrimitive)]
+#[repr(i32)]
 pub enum MissileWarheadType
 {
     Nuclear = 0,

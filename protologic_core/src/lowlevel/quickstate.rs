@@ -98,6 +98,15 @@ impl QuickStateBox
     }
 
     #[allow(dead_code)]
+    pub fn read_i64(&self, addr: usize) -> i64
+    {
+        unsafe
+        {
+            return std::ptr::read_unaligned(self.ptr.add(addr) as *const i64);
+        }
+    }
+
+    #[allow(dead_code)]
     pub fn read_u64(&self, addr: usize) -> u64
     {
         unsafe
