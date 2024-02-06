@@ -1,6 +1,3 @@
-protologic_define_extern!(pub(crate) fn ship_self_destruct());
-protologic_define_extern!(pub(crate) fn runninglight_set_state(state: i32));
-
 protologic_define_extern!(pub(crate) fn engine_set_throttle(throttle: f32));
 protologic_define_extern!(pub(crate) fn wheel_set_torque(x: f32, y: f32, z:f32));
 

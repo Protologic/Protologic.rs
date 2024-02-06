@@ -40,3 +40,4 @@ pub mod missile_launcher;
 pub mod maneuvering;
 pub mod physics;
 pub mod misc;
+pub mod warhead;
